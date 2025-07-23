@@ -2,8 +2,9 @@ import { NextResponse , NextRequest  } from "next/server";
 import UserModel from "@/model/user";
 import bcrypt from 'bcrypt'
 import dbConnect from "@/lib/dbconnect";
-import { errorResponse } from '../../../Types/ApiErrorResponse'
+import { errorResponse } from '../../../../Types/ApiErrorResponse'
 import { SucessResponse } from "@/Types/ApiResponse";
+import { SendVerificationEmail } from "@/Helpers/SendVerificationCode";
 
 // connect database
 // take name  , email ,   password from request.json
@@ -13,7 +14,7 @@ import { SucessResponse } from "@/Types/ApiResponse";
 // so hash the password through bycrpt 
 // save the user in database and return  response 
 
-export async function POST(request:NextRequest) {
+export async function POST(request: Response) {
     try {
         await dbConnect()
       
@@ -29,7 +30,7 @@ export async function POST(request:NextRequest) {
        }
        
        const verifyCode = Math.floor(1000000 + Math.random() * 900000).toString()
-       const hashpassword = bcrypt.hash(password , 10)
+       const hashpassword = await bcrypt.hash(password , 10)
        const expiryDate = new Date()
        expiryDate.setHours(expiryDate.getHours() + 1)
 
@@ -42,10 +43,23 @@ export async function POST(request:NextRequest) {
       })
 
       await newUser.save()
-      
+    
+
+    // sending verification code // TODO: add a for loop for resend email button
+   try {
+       await SendVerificationEmail(verifyCode ,  name , email)
+      console.log("Verify code send sucessfully")
+      return SucessResponse("Verified code sent sucessfully please verify your email" , 201)
+
+   } catch (error) {
+    console.error("Error while ocurr email" , error)
+    return errorResponse("Error while sending the email" , 500)
+   }
+        
+
 
     } catch (error) {
-        console.log("Error while sigining the user")
+        console.log("Error while sigining the user" , error)
         return NextResponse.json({
             message: "Error  while sigin in the user"
         } , {status: 400})
