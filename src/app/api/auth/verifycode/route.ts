@@ -35,11 +35,17 @@ export async function POST(request: NextRequest) {
        }
 
        if(IsCodeVaild && IsCodeExpried) {
+
         if (foundUser) {
             foundUser.isVerifiedEmail = true;
         }
        }
-       return SucessResponse("User Verified Sucessfully" , 201)
+       foundUser?.save()
+
+       return Response.json({
+        message: "Sucess",
+        foundUser,
+       } ,  {status: 201})
         
     } catch (error) {
         console.log("Error while verifying the code" , error)

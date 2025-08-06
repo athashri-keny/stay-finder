@@ -1,5 +1,4 @@
 import { errorResponse } from "@/Types/ApiErrorResponse";
-import { SucessResponse } from "@/Types/ApiResponse";
 import dbConnect from "@/lib/dbconnect";
 import ListingModel from "@/model/listing";
 import { NextRequest, NextResponse } from "next/server";
@@ -8,7 +7,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(_request: NextRequest ,
   {params}: {params: {RoomId: string}}
 ) {
-
 
     await dbConnect()
   const RoomId = params.RoomId

@@ -10,7 +10,7 @@ images: string[],
 rating?: string,
 host: ObjectId,
 amenities?: string[],
-availableDates: Date[] // optional for filtering
+availableDates?: Date[] // optional for filtering
 }
 
 const ListingSechma: Schema<Listing> = new Schema({

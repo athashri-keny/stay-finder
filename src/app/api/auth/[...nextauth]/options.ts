@@ -3,10 +3,12 @@ import  CredentialsProvider  from "next-auth/providers/credentials";
 import bcrypt from 'bcrypt'
 import dbConnect from "@/lib/dbconnect";
 import UserModel from "@/model/user";
+import path from "path";
 
 
-
+const isDev = process.env.NODE_ENV !== 'production';
 export const authOptions: NextAuthOptions = {
+  
 providers: [
     CredentialsProvider({
       id: "Credentials",
@@ -72,6 +74,7 @@ pages: {
 session: {
   strategy: 'jwt'
 },
+
 secret: process.env.NEXTAUTH_SECRET
 
 }

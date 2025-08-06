@@ -12,6 +12,7 @@
     "@imagekit/next": "^2.1.2",
     "axios": "^1.10.0",
     "bcrypt": "^6.0.0",
+    "imagekit": "^6.0.0",
     "lucide-react": "^0.525.0",
     "mongoose": "^8.16.3",
     "moongoose": "^0.0.5",

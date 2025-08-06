@@ -18,24 +18,30 @@ export async function POST(request: NextRequest) {
    try {
           await dbConnect()
        const form = await request.formData()
+
+
        const description = form.get("description") as String
-       const location = form.get("Location") as String
-      const price = parseFloat(form.get("Price") as string) || null;
+       const location = form.get("location") as String
+      const price = parseFloat(form.get("price") as string) || null;
        const images = form.get("images") as File | null
        const rating = form.get("rating") as String
        const amenities = form.get("amenities") as String
        const availableDates = form.get("availableDates") as Date | null
+    console.log({ description, location, price, images, rating, amenities, availableDates });
+
 
 
        if (!description || !location || !price || !images || !rating || !amenities || !availableDates ) {
          return errorResponse("Error response all fields are required!" , 400)
        }
+
+
  
       const session = await getServerSession(authOptions)
       const user: User = session?.user as User
  
       if (!session || !session.user) {
-         return errorResponse("Error your not loggin please login to add property" , 401)
+         return errorResponse("Error your not loggin please login to add property" , 401) 
       }
  
       const userId = user._id
