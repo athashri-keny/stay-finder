@@ -18,9 +18,9 @@ export async function POST(request: Response) {
     try {
         await dbConnect()
       
-        const {name , email , password} =  await request.json()
+        const {name , email , password , phone} =  await request.json()
 
-        if (!name || !email || !password) {
+        if (!name || !email || !password ||  !phone) {
             return SucessResponse("All fields are required!" , 400)
         }
 
@@ -29,7 +29,8 @@ export async function POST(request: Response) {
         return errorResponse("Email already exists in your database" , 401)
        }
        
-       const verifyCode = Math.floor(1000000 + Math.random() * 900000).toString()
+       const verifyCode = Math.floor(1000000 + Math.random() * 900000).toString() // creating a verify code 
+
        const hashpassword = await bcrypt.hash(password , 10)
        const expiryDate = new Date()
        expiryDate.setHours(expiryDate.getHours() + 1)
@@ -45,7 +46,7 @@ export async function POST(request: Response) {
       await newUser.save()
     
 
-    // sending verification code // TODO: add a for loop for resend email button
+    // sending verification code 
    try {
        await SendVerificationEmail(verifyCode ,  name , email)
       console.log("Verify code send sucessfully")

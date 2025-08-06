@@ -3,7 +3,7 @@ import dbConnect from "@/lib/dbconnect";
 import ListingModel from "@/model/listing";
 import { NextRequest, NextResponse } from "next/server";
 
-// Get a Single room by id 
+// Get a Single room by id for a single post 
 export async function GET(_request: NextRequest ,
   {params}: {params: {RoomId: string}}
 ) {
@@ -22,7 +22,7 @@ export async function GET(_request: NextRequest ,
 
      return NextResponse.json({
       message: "Room found!",
-      result: [result]
+      result: [result] // easy for fronted to loop 
      } , {status: 200})
 
     } catch (error) {

@@ -8,6 +8,7 @@ password: string,
 isVerifiedEmail?: boolean,
 verifycode: string,
 verifycodeexpiry: Date,
+phone: number
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -24,8 +25,9 @@ const UserSchema: Schema<User> = new Schema({
     },
     password: {
         type: String,
-        required: [true , "password is required!"],
-        unique: true
+        required: [false, "password is required!"],
+        unique: true,
+      
     },
     isVerifiedEmail: {
       type: Boolean,
@@ -33,11 +35,11 @@ const UserSchema: Schema<User> = new Schema({
     },
     verifycode: {
         type: String,
-        required: [true , "Verify code is required!"]
+        required: [false , "Verify code is required!"]
     },
     verifycodeexpiry: {
         type: Date,
-        required: [true , "Verify code expired is required!"]
+        required: [false , "Verify code expired is required!"]
     }
 })
 
