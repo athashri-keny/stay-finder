@@ -6,6 +6,7 @@ import UserModel from "@/model/user";
 import GoogleProvider from "next-auth/providers/google";
 
 
+
 export const authOptions: NextAuthOptions = {
 providers: [
   GoogleProvider({
@@ -13,17 +14,17 @@ providers: [
     clientSecret: process.env.GOOGLE_CLIENT_SECRET!
   }),
   CredentialsProvider({
-    id: "Credentials",
-    name: "Credentials",
+    id: "credentials",
+    name: "credentials",
     credentials: {
-      username: { label: "Email", type: 'text', placeholder: "Enter your email" },
+      email: { label: "Email", type: 'text', placeholder: "Enter your email" },
       password: { label: "Password", type: "password", placeholder: "Enter your password" },
     },
     async authorize(credentials: any): Promise<any> {
       await dbConnect();
       try {
         const user = await UserModel.findOne({
-          email: credentials.identifier
+          email: credentials.email
         });
         if (!user) {
           throw new Error("Email does not exist in our database");

@@ -2,22 +2,26 @@ import { NextRequest , NextResponse } from "next/server";
 import UserModel from "@/model/user";
 import dbConnect from "@/lib/dbconnect";
 import { errorResponse } from '../../../../Types/ApiErrorResponse'
-import { SucessResponse } from "@/Types/ApiResponse";
 
-export async function POST(request: NextRequest) {
+
+export async function POST(request: NextRequest , context: {params: {name: string}} ) {
     try {
         await dbConnect()
 
-     const {name , verifycode} =  await request.json()
-     if (!name || !verifycode) {
+     const { verifycode} =  await request.json()
+     const {name} = context.params
+
+
+     if ( !name ||!verifycode) {
         return errorResponse("Name and verify code is required!" , 401)
      }
      
      const DecodedName = decodeURIComponent(name) // TODO: Check it later on by removing it what happens
 
     const foundUser =  await UserModel.findOne({name: DecodedName})
+
     if (!foundUser) {
-        errorResponse("error User does exist in your database" , 500)
+        errorResponse("error User does exist in your database" , 404)
     }
 
     const IsCodeVaild = foundUser?.verifycode === verifycode
