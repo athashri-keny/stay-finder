@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
 
 
 
-       if (!description || !location || !price || !images || !rating || !amenities || !availableDates ) {
+       if (!description || !location || !price || !images || !rating   ) {
          return errorResponse("Error response all fields are required!" , 400)
        }
 
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       }
  
       const userId = user._id
-    
+      console.log("User id "  , session.user)
     if (!userId) {
    return errorResponse("Error User Id is required", 400);
 }

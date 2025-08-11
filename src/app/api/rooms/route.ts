@@ -11,16 +11,7 @@ export async function GET(_request: NextRequest) {
         
      const foundProperty = await ListingModel.find({})
 
-     if (foundProperty.length == 0 ) {
-        return NextResponse.json({
-            message: "No rooms Posted Now Wait until someone post"
-        } , {status: 201})
-     }        
-
-     return NextResponse.json({
-        message: "Rooms found",
-        foundProperty
-     } , {status: 200})
+return NextResponse.json(foundProperty, { status: 200 });
 
 
     } catch (error) {

@@ -2,15 +2,13 @@
 
 import mongoose , {Schema , Document, ObjectId} from "mongoose";
 
-
 export interface Booking extends Document {
     user: ObjectId, // property posting by host
     listing: ObjectId // host property
     checkin: Date,
     checkout: Date,
-    // totalprice: number, TODO: check this later 
-    guests: string,
-    status: 'pending' | 'confirmed'
+    guests: number,
+    status: ' available' | 'booked'
 }
 
 const bookingSchema: Schema<Booking> = new Schema({
@@ -33,7 +31,7 @@ const bookingSchema: Schema<Booking> = new Schema({
     required: [true , "Check-out date is required!"]
   },
   guests: {
-    type: String,
+    type: Number,
     required: [true , "Aleast one Guest is required!"],
     min: 1,
     max: 9
@@ -47,6 +45,6 @@ const bookingSchema: Schema<Booking> = new Schema({
 })
 
 
-const BookingModel = (mongoose.models.Booking as mongoose.Model<Booking> || mongoose.model<Booking> ("Bookig" , bookingSchema) )
+const BookingModel = (mongoose.models.Booking as mongoose.Model<Booking> || mongoose.model<Booking> ("Booking" , bookingSchema) )
 
 export default BookingModel
