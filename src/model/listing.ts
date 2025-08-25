@@ -3,20 +3,25 @@
     import mongoose , {Schema , Document, ObjectId} from "mongoose";
 
     export interface Listing extends Document  {
+    title: string,
     description: string,
     location: string,
     price: number,
     images: string[],
-    rating?: number,
     host: ObjectId,
     amenities?: string[],
+    status: 'booked' | 'available'
     availableDates?: {
-        to: Date[]
-        from?: Date[]
+        to: String,
+        from: String
     } // optional for filtering
     }
 
     const ListingSechma: Schema<Listing> = new Schema({
+        title: {
+            type: String,
+            required: [true , "Title is required!"]
+        },
     description: {
         type: String,
         required: [true, "Description of the property is required!"]
@@ -43,15 +48,21 @@
     amenities: {
         type: [String]
     },
-    availableDates: {
-        type: [Date],
+    status: {
+     type: String,
+     enum: ['booked' , 'available'],
+     default: 'available'
     },
-    rating: {
-        type: Number,
-        min: 0,
-        max: 5,
-        default: 0
-    }
+    availableDates: {
+        to: {
+            type: String,
+            required: false
+        },
+        from: {
+            type: String,
+            required: false
+        }
+    },
     },
     {timestamps: true}
     )

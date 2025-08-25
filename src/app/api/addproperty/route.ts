@@ -19,19 +19,24 @@ export async function POST(request: NextRequest) {
           await dbConnect()
        const form = await request.formData()
 
-
+       const title = form.get("title") as String || null
        const description = form.get("description") as String
        const location = form.get("location") as String
       const price = parseFloat(form.get("price") as string) || null;
        const images = form.get("images") as File | null
-       const rating = form.get("rating") as String
        const amenities = form.get("amenities") as String
-       const availableDates = form.get("availableDates") as Date | null
-    console.log({ description, location, price, images, rating, amenities, availableDates });
+       const availabledatefrom = form.get("availableDates.from") as String || null
+       const availabledateto = form.get("availableDates.to")  as String || null
+
+
+       
+
+
+    console.log({ description, location, price, images, amenities , availabledatefrom ,  availabledateto , title });
 
 
 
-       if (!description || !location || !price || !images || !rating   ) {
+       if (!description || !location || !price || !images  || !title  ) {
          return errorResponse("Error response all fields are required!" , 400)
        }
 
@@ -60,13 +65,18 @@ if (!uploadimg) {
 
 
       const NewProperty = new ListingModel({
+         title,
+         status: 'available',
         description,
         location,
         price,
-        images: uploadimg,
+        images: [uploadimg],
         host: userId,
         amenities,
-        availableDates        
+       availableDates: {
+         to: availabledateto,
+         from: availabledatefrom
+       },
        })
 
        await NewProperty.save()

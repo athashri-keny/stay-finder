@@ -1,17 +1,24 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
 import { FiArrowLeft, FiHash } from 'react-icons/fi'
 import { VerifyCodeSchema } from '@/Schemas/VerifyCodeSchema'
 import { useParams, useRouter } from 'next/navigation'
-import { Form, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
-import { FormControl, FormField, FormItem, FormLabel, FormMessage , } from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
+
+
 
 const floatingVariants = {
   float: {
@@ -23,31 +30,33 @@ const floatingVariants = {
     }
   }
 };
+
 const VerifyCode = () => {
-const router = useRouter()
-const param = useParams<{name: string}>()
+  const router = useRouter()
+  const params = useParams<{name: string}>()
 
-const form = useForm<z.input<typeof VerifyCodeSchema>>({
-  resolver: zodResolver(VerifyCodeSchema),
-  defaultValues: {
-    code: ''
+  console.log(params.name)
+  const form = useForm<z.infer<typeof VerifyCodeSchema>>({
+    resolver: zodResolver(VerifyCodeSchema),
+    defaultValues: {
+      code: ''
+    }
+  })
+
+
+  const onSubmitt = async (data: z.infer<typeof VerifyCodeSchema>) => {
+    try {
+     const response =  await axios.post(`/api/auth/verifycode`, {
+        name: params.name,
+        verifycode: data.code
+      })
+      console.log("form data" , response.data )
+      console.log("Successfully verified account! Redirecting to dashboard...")
+      router.push('/dashboard')
+    } catch (error) {
+      console.log("Error while submitting", error)
+    }
   }
-})
-
-const onsubmit = async (data: z.infer<typeof VerifyCodeSchema>) => {
-  try {
-    await axios.post(`/api/auth/verify-code`  , {
-      name: param.name,
-      code: data.code
-    })
-    console.log("Sucessfully verified account redirecting to dashboard!")
-    router.push('/dashboard')
-  } catch (error) {
-    console.log("Error while submiting" , error)
-  }
-}
-
-  const codeInputs = Array(6).fill(0);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center p-4 overflow-hidden relative">
@@ -79,8 +88,8 @@ const onsubmit = async (data: z.infer<typeof VerifyCodeSchema>) => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden border border-gray-700/50"
         >
-
           <div className="bg-gradient-to-r from-gray-900 to-black p-8 text-center relative overflow-hidden">
+            {/* Background elements */}
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -122,24 +131,47 @@ const onsubmit = async (data: z.infer<typeof VerifyCodeSchema>) => {
             </motion.div>
           </div>
 
-            <Form {...form}>
-      <form onSubmit={form.handleSubmit(onsubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="code"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Verification Code</FormLabel>
-              <FormControl>
-                <Input placeholder="enter your code" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmitt)} className="p-6 space-y-8">
+              <FormField
+                control={form.control}
+                name="code"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col items-center">
+                    <FormLabel className="text-gray-300 mb-4">Verification Code</FormLabel>
+                    <FormControl>
+                     <InputOTP maxLength={6}
+                     value= {field.value}
+                     onChange={field.onChange}
+                     >
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+  </InputOTPGroup>
+  <InputOTPSeparator />
+  <InputOTPGroup>
+    <InputOTPSlot index={3} />
+    <InputOTPSlot index={4} />
+    <InputOTPSlot index={5} />
+  
+  </InputOTPGroup>
+</InputOTP>
+                    </FormControl>
+                    <FormMessage className="mt-4 text-red-400" />
+                  </FormItem>
+                )}
+              />
+              
+              <Button 
+                       type="submit" 
+                className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-medium py-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
+              >
+                Verify Account
+              </Button>
+            </form>
+          </Form>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

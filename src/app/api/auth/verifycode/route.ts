@@ -4,21 +4,23 @@ import dbConnect from "@/lib/dbconnect";
 import { errorResponse } from '../../../../Types/ApiErrorResponse'
 
 
-export async function POST(request: NextRequest , context: {params: {name: string}} ) {
+export async function POST(request: NextRequest ) {
     try {
         await dbConnect()
 
-     const { verifycode} =  await request.json()
-     const {name} = context.params
+     const {  verifycode , name} =  await request.json()
 
+   console.log(name , verifycode)
 
-     if ( !name ||!verifycode) {
+     if ( !name || !verifycode) {
         return errorResponse("Name and verify code is required!" , 401)
      }
-     
-     const DecodedName = decodeURIComponent(name) // TODO: Check it later on by removing it what happens
 
-    const foundUser =  await UserModel.findOne({name: DecodedName})
+     
+    const foundUser =  await UserModel.findOne({name: name})
+
+
+    console.log( "Found user = " , foundUser )
 
     if (!foundUser) {
         errorResponse("error User does exist in your database" , 404)
@@ -30,10 +32,6 @@ export async function POST(request: NextRequest , context: {params: {name: strin
         ? new Date(foundUser.verifycodeexpiry) > new Date()
         : false
 
-       if (!IsCodeExpried) {
-        return errorResponse("Error Code is expired" , 400)
-       }
-
        if(!IsCodeVaild) {
         return errorResponse("Error code is Invaild" , 401)
        }
@@ -44,6 +42,7 @@ export async function POST(request: NextRequest , context: {params: {name: strin
             foundUser.isVerifiedEmail = true;
         }
        }
+
        foundUser?.save()
 
        return Response.json({

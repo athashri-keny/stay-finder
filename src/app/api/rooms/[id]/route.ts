@@ -4,18 +4,21 @@ import ListingModel from "@/model/listing";
 import { NextRequest, NextResponse } from "next/server";
 
 // Get a Single room by id for a single post 
-export async function GET(_request: NextRequest ,
-  {params}: {params: {RoomId: string}}
+export async function GET(request: NextRequest ,
+  {params}: {params: Promise<{id: string} >} // TODO: Check this feature out 
 ) {
 
     await dbConnect()
-  const RoomId = params.RoomId
 
-  if (!RoomId) {
+  const {id} =  await params
+  console.log("Room id = " , id)
+
+  if (!id) {
     return errorResponse("error room id is requred!" , 404)
   } 
+
     try {
-     const result = await ListingModel.findById(RoomId)
+     const result = await ListingModel.findById(id)
          if (!result) {
       return errorResponse("ERRROR ROOM NOT FOUND")
      }    

@@ -8,7 +8,7 @@ export const nameQuerySchema = z.object({
 });
 
 export const SignUpSchema = z.object({
-  name: z.string({ message: "Name is required" }),
+  name: z.string({ message: "Name is required" }).trim(),
   email: z.string().email({ message: "Invalid email address" }),
   password: z.string().min(6, { message: "Password must be at least 6 characters"  ,}),
   phone: z.string().regex(/^\+?[1-9][0-9]{7,14}$/),

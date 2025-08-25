@@ -10,10 +10,13 @@ import {
   MenubarSeparator,
   MenubarTrigger,
 } from "@/components/ui/menubar"
-import { useSession } from 'next-auth/react'
+import { useSession , signOut } from 'next-auth/react'
+import { Button } from './ui/button'
+
 
 function Navbar() {
   const { data: session } = useSession()
+console.log(session?.user)
 
   return (
     <div className="border-b">
@@ -32,7 +35,7 @@ function Navbar() {
               <MenubarTrigger className="cursor-pointer font-medium text-md">Stays</MenubarTrigger>
               <MenubarContent>
                 <MenubarItem asChild>
-                  <Link href="/stays">Browse Stays</Link>
+                  <Link href="/dashboard">Browse Stays</Link>
                 </MenubarItem>
                 <MenubarSeparator />
                 <MenubarItem asChild>
@@ -90,7 +93,9 @@ function Navbar() {
                       <Link href="/wishlists">Favourites</Link>
                     </MenubarItem>
                     <MenubarSeparator />
-                    <MenubarItem>Log Out</MenubarItem>
+                    <Button
+                    onClick={ () => {signOut()}}
+                    >Log Out</Button>
                   </>
                 ) : (
                   <>

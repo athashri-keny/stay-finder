@@ -33,6 +33,7 @@
     defaultValues: {
       name: '',
       email: '',
+      phone: '',
       password: '',
       confirmPassword: ''
     }
@@ -41,9 +42,9 @@
   const SubmitHandler = async (data: z.infer<typeof SignUpSchema>) => {
 
     try {
-      const response = await axios.post('/api/auth/signup' , data)
+      const response = await axios.post('/api/auth/sign-up' , data)
       console.log("Signup sucessfully" , response.data)
-      router.push(`verify-code/${data.name}`)
+      router.push(`verify/${data.name}`)
       
     } catch (error) {
       console.log("Error while sigining up" , error)
@@ -189,7 +190,7 @@
         name="phone"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-gray-300">Full Name</FormLabel>
+            <FormLabel className="text-gray-300"> Phone</FormLabel>
             <FormControl>
               <div className="relative">
                 <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
@@ -199,7 +200,7 @@
                   field.onChange(e)
                   }} 
                   className="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  placeholder="John Doe"
+                  placeholder="number"
                           
                       />
               </div>

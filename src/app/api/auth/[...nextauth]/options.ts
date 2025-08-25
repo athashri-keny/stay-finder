@@ -42,10 +42,16 @@ providers: [
   })
 ],
 
+
+pages: {
+  signIn: '/auth/sign-in',
+  signOut: '/auth/signout'
+},
+
 // callbacks let you customize the authentication process at various  stages
   callbacks: {
   // Runs when user signs in (for OAuth & Credentials both)
-  async signIn({  account, profile }) {
+  async signIn({  account, profile  }) {
 
     if (account?.provider === "google") {
       await dbConnect();
@@ -71,6 +77,7 @@ providers: [
     return true; 
   },
 
+
   // Persist custom fields into JWT
   async jwt({ token, user }) {
     if (user) {
@@ -90,5 +97,11 @@ providers: [
     }
     return session;
   }
-}
+
+},
+
+session: {
+  strategy: "jwt"
+},
+  secret: process.env.NEXTAUTH_SECRET
 }

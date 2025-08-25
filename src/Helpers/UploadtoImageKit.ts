@@ -17,6 +17,7 @@ export async function uploadToImageKit(file: File, folder?: string): Promise<str
     }
 
     const response = await imagekit.upload(uploadOptions);
+    console.log( "image upload sucessfully" , response )
 
     return response.url;
   } catch (error) {
