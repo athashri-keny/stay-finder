@@ -138,9 +138,10 @@ const VerifyCode = () => {
                 name="code"
                 render={({ field }) => (
                   <FormItem className="flex flex-col items-center">
-                    <FormLabel className="text-gray-300 mb-4">Verification Code</FormLabel>
+                    <FormLabel className="text-white-300 mb-4">Verification Code</FormLabel>
                     <FormControl>
                      <InputOTP maxLength={6}
+                     className='text-white'
                      value= {field.value}
                      onChange={field.onChange}
                      >

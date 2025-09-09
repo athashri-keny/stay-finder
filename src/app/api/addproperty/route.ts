@@ -29,8 +29,6 @@ export async function POST(request: NextRequest) {
        const availabledateto = form.get("availableDates.to")  as String || null
 
 
-       
-
 
     console.log({ description, location, price, images, amenities , availabledatefrom ,  availabledateto , title });
 
@@ -77,9 +75,23 @@ if (!uploadimg) {
          to: availabledateto,
          from: availabledatefrom
        },
+       
        })
 
        await NewProperty.save()
+
+       await UserModel.findByIdAndUpdate(
+         userId,
+         {$push:    
+         {PropertyPosted: NewProperty._id ,
+         title: title,
+         price: price
+         }, 
+
+      },
+       {new: true}
+       )
+       
        return NextResponse.json({
          message: "Property created Sucessfully",
          NewProperty

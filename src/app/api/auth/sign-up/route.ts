@@ -29,7 +29,7 @@ export async function POST(request: Response) {
         return errorResponse("Email already exists in your database" , 401)
        }
        
-     const verifyCode = Math.floor(100000 + Math.random() * 900000).toString() 
+     const verifyCode = Math.floor(100000 + Math.random() * 900000).toString() // creating a 6 digit verify code 
 
        const hashpassword = await bcrypt.hash(password , 10)
        const expiryDate = new Date()
@@ -41,6 +41,9 @@ export async function POST(request: Response) {
         password: hashpassword,
         verifycode: verifyCode,
         verifycodeexpiry: expiryDate,
+        phone,
+        favourites: [],
+        PropertyPosted: [], // or assign an appropriate value if needed
       })
 
       await newUser.save()

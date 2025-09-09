@@ -7,6 +7,15 @@ import { useEffect } from 'react'
 import {  useParams } from 'next/navigation'
 import { RoomSchema } from '@/Schemas/RoomSchema'
 import z from 'zod'
+import { Heart } from 'lucide-react'
+import { Toaster } from '@/components/ui/sonner'
+import { toast } from 'sonner'
+
+
+// TODO: create a favourite page backend + frontend
+// account settings page backend + frontend
+// Reserve Booking frontend 
+// rating
 
 type Room = z.infer<typeof RoomSchema >
 
@@ -17,9 +26,11 @@ const formatDate = (isoDateString: string): string => {
 }
 
 function PropertyDetails() {
-
-
 const [roomsdata , setroomdata] = useState<Room | null>()
+const [favouriteProp ,  setfavouritesProp] = useState(false)
+const [isFavourite , setisfavourite] = useState(false)
+const [loading , setloading ] = useState(false)
+
 
    const parmams = useParams()
   const roomid = parmams?.id as string
@@ -43,10 +54,39 @@ useEffect(() => {
     console.log("Error while hitting the api request" , error)
   }  
     }
+    
  getPropertyDetails()
   } , [roomid]
 )
 
+  // add to favourites
+const addtofavourite = async() => {
+  try {
+
+    const response = await axios.post(`/api/rooms/${roomid}`)
+    console.log(response.data)
+    toast("property added favourite sucessfully")
+
+
+  } catch (error) {
+    console.log("error while adding to favourites" , error)
+  }
+}
+
+
+// get current user favourites properties
+useEffect(() => {
+const getFavproperties = async () => {
+  try {
+    const response = await axios.get('/api/rooms/favourites')
+    console.log(response.data)
+    setfavouritesProp(response.data.favouriteProperties)
+    } catch (error) {
+    console.log("errro while getting current  fav properties" , error)
+  }
+}
+getFavproperties()
+} , [loading])
 
 
   return (
@@ -178,7 +218,23 @@ useEffect(() => {
             <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
               Reserve
             </button>
-            
+            {}
+            <button
+  onClick={() => addtofavourite()}
+  className="w-full bg-yellow-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-yellow-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 mt-2 flex items-center justify-center gap-2"
+>
+  {favouriteProp ? (
+    <>
+      <Heart className="fill-red-500 text-red-500" />
+      Added to Favourites
+    </>
+  ) : (
+    <>
+      <Heart className="text-white" />
+      Add to Favourites
+    </>
+  )}
+</button>
            
           </div>
         </div>

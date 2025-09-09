@@ -16,7 +16,7 @@ import { Button } from './ui/button'
 
 function Navbar() {
   const { data: session } = useSession()
-console.log(session?.user)
+// console.log(session?.user)
 
   return (
     <div className="border-b">
@@ -87,7 +87,7 @@ console.log(session?.user)
                 {session?.user ? (
                   <>
                     <MenubarItem asChild>
-                      <Link href="/account">Account Settings</Link>
+                      <Link href="/user">Account Settings</Link>
                     </MenubarItem>
                     <MenubarItem asChild>
                       <Link href="/wishlists">Favourites</Link>

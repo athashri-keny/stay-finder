@@ -1,6 +1,7 @@
 import mongoose , {Schema , Document, Mongoose} from "mongoose";
 
 
+
 export interface User extends Document{
 name: string,
 email: string,
@@ -8,7 +9,8 @@ password: string,
 isVerifiedEmail?: boolean,
 verifycode: string,
 verifycodeexpiry: Date,
-phone: number
+phone: number,
+PropertyPosted: mongoose.Types.ObjectId
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -40,7 +42,19 @@ const UserSchema: Schema<User> = new Schema({
     verifycodeexpiry: {
         type: Date,
         required: [false , "Verify code expired is required!"]
+    },
+    phone: {
+     type: Number,
+     required: [true , "Phone number is required!"]
+    },
+      PropertyPosted: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Listing'  ,
+      title: String,
+      Image: String
     }
+  ],
 })
 
 // checking if the model is already created or not if not creates it
