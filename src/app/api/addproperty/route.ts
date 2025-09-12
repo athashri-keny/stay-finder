@@ -80,17 +80,23 @@ if (!uploadimg) {
 
        await NewProperty.save()
 
-       await UserModel.findByIdAndUpdate(
-         userId,
-         {$push:    
-         {PropertyPosted: NewProperty._id ,
+   //TODO: check the $push operator 
+    const addpropertyDetails = await UserModel.findByIdAndUpdate(
+   userId,
+   {
+     $push: { 
+       PropertyPosted: {
+         propertyId: NewProperty._id,
          title: title,
-         price: price
-         }, 
-
-      },
-       {new: true}
-       )
+         images: [uploadimg],
+         price: price,
+         description: description
+       }
+     }
+   },
+   { new: true }
+);
+       console.log("Details added sucessfully" , addpropertyDetails)
        
        return NextResponse.json({
          message: "Property created Sucessfully",

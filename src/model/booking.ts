@@ -1,15 +1,21 @@
 // Reservations made by users (Booking)
 
 import mongoose , {Schema , Document, ObjectId} from "mongoose";
+import ListingModel from "./listing";
 
 export interface Booking extends Document {
     user: ObjectId, // property posting by host
     listing: ObjectId // host property
     checkin: Date,
     checkout: Date,
-    guests: number,
-    status: ' available' | 'booked'
-}
+    totalPrice: Number,
+    paymentStatus: 'pending' | 'completed' | 'Failed'
+    guests: Number
+    BookingId: string
+    NumberOfnights: Number
+    }
+
+
 
 const bookingSchema: Schema<Booking> = new Schema({
   user: {
@@ -30,21 +36,37 @@ const bookingSchema: Schema<Booking> = new Schema({
     type: Date,
     required: [true , "Check-out date is required!"]
   },
+  totalPrice: {
+    type: Number,
+    required: true
+  },
+  paymentStatus: {
+    type: String,
+    enum: ['pending' , 'completed' , 'failed'],
+    default: 'pending'
+  },
   guests: {
     type: Number,
-    required: [true , "Aleast one Guest is required!"],
-    min: 1,
-    max: 9
-  },
-  status: {
+    required: [true , "Guests numbers are required!"]
+  }, 
+  BookingId: {
     type: String,
-    required: [true , "Status is requried!"]
+    required: [true , 'booking Id is required!']
+  },
+  NumberOfnights  : {
+    type: Number,
+    required: [true , "Number of nights is required@"]
   }
+
 } , {
     timestamps: true
 })
 
 
+
 const BookingModel = (mongoose.models.Booking as mongoose.Model<Booking> || mongoose.model<Booking> ("Booking" , bookingSchema) )
+
+
+
 
 export default BookingModel

@@ -47,14 +47,31 @@ const UserSchema: Schema<User> = new Schema({
      type: Number,
      required: [true , "Phone number is required!"]
     },
-      PropertyPosted: [
-    {
+    
+    PropertyPosted: [
+  {
+    propertyId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Listing'  ,
-      title: String,
-      Image: String
+      ref: 'Listing',
+      required: true
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    images: [{
+      type: String
+    }],
+    price: {
+      type: Number,
+      required: true
+    },
+    description: {
+      type: String,
+      required: true
     }
-  ],
+  }
+],
 })
 
 // checking if the model is already created or not if not creates it

@@ -19,7 +19,7 @@ export async function GET( _request: NextRequest) {
         } , {status: 404})
      }
 
-     const foundUser = await UserModel.findById(session.user._id)
+     const foundUser = await UserModel.findById(session.user._id).select('-password -verifycode -verifycodeexpiry')
 
      if (!foundUser) {
         return NextResponse.json({
