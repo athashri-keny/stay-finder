@@ -1,6 +1,5 @@
 import { errorResponse } from "@/Types/ApiErrorResponse";
 import dbConnect from "@/lib/dbconnect";
-import ListingModel from "@/model/listing";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
@@ -9,6 +8,7 @@ import favouriteModel from "@/model/favourites";
 
 
 export async function GET(_request: NextRequest) {
+  
   try {
     await dbConnect()
 
@@ -28,7 +28,9 @@ export async function GET(_request: NextRequest) {
     } , {status: 404})
    }
 
-   const favouriteProperties = await favouriteModel.findOne({userId: userId})
+   const favouriteProperties = await favouriteModel.find({userId: userId}).
+   populate('propertyId')
+   
 
    if (!favouriteProperties) {
     return NextResponse.json({
@@ -41,6 +43,7 @@ export async function GET(_request: NextRequest) {
     favouriteProperties
    } , {status: 200})
 
+   
   } catch (error) {
     console.log("Error while fetching get favourites properties" , error)
     

@@ -12,7 +12,7 @@ export interface Booking extends Document {
     paymentStatus: 'pending' | 'completed' | 'Failed'
     guests: Number
     BookingId: string
-    NumberOfnights: Number
+    numberOfNights: Number
     }
 
 
@@ -53,7 +53,7 @@ const bookingSchema: Schema<Booking> = new Schema({
     type: String,
     required: [true , 'booking Id is required!']
   },
-  NumberOfnights  : {
+  numberOfNights: {
     type: Number,
     required: [true , "Number of nights is required@"]
   }

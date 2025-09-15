@@ -10,6 +10,7 @@ import z from 'zod'
 import { Heart } from 'lucide-react'
 import { Toaster } from '@/components/ui/sonner'
 import { toast } from 'sonner'
+import { Badge } from '@/components/ui/badge'
 
 
 // TODO: create a favourite page backend + frontend
@@ -19,7 +20,7 @@ import { toast } from 'sonner'
 
 type Room = z.infer<typeof RoomSchema >
 
-
+// TODO:
 const formatDate = (isoDateString: string): string => {
   const date = new Date(isoDateString)
   return date.toLocaleDateString() 
@@ -215,7 +216,12 @@ getFavproperties()
               </div>
             </div>
             
-            <Link href={`/room/${roomid}/book`} className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            <Link
+              href={`/room/${roomid}/book`}
+              className={`w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium
+                hover:bg-blue-700 transition duration-200 focus:outline-none focus:ring-2
+                focus:ring-blue-500 focus:ring-opacity-50${roomsdata?.status === 'booked' ? ' hidden' : ''}`}
+            >
               Reserve
             </Link>
             {}

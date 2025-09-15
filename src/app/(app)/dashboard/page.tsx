@@ -6,6 +6,8 @@ import { RoomSchema  } from '@/Schemas/RoomSchema';
 import z from 'zod';
 import { useEffect } from 'react';
 import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
+
 
 function Dashboard() {
   type RoomType = z.infer<typeof RoomSchema> 
@@ -16,16 +18,16 @@ function Dashboard() {
       try {
         const response = await axios.get('/api/rooms')
         const parsedRooms = z.array(RoomSchema).parse(response.data)
-
+        console.log(parsedRooms)
         setRooms(parsedRooms)
-      } catch (error) {
+        } catch (error) {
         console.error("Error fetching rooms", error)
       }
     }
     fetchRooms()
   }, [])
 
-  return (
+    return (
     <div className="p-6 max-w-7xl mx-auto">
       <h1 className="text-3xl font-bold mb-8">Available Rooms</h1>
       
@@ -42,14 +44,21 @@ function Dashboard() {
           {rooms.map(room => (
             <Link key={room._id} href={`/room/${room._id}`}>
               <div className="bg-white rounded-xl shadow-md overflow-hidden">
-                {/* Simple image display */}
                 <img 
                   src={room?.images[0]} 
                   alt="Property" 
                   className="w-full h-48 object-cover"
                 />  
                 <div className="p-4">
-                  <h3 className="font-semibold text-lg truncate text-black">{room?.title}</h3>
+                  <div className="flex justify-between items-start">
+                    <h3 className="font-semibold text-lg truncate text-black">{room?.title}</h3>
+                    <Badge 
+                      variant={room.status === 'available' ? 'outline' : 'destructive'}
+                      className={room.status === 'available' ? "bg-green-500" : "bg-red-500"}
+                    >
+                      {room.status === 'available' ? "Available" : "Booked"}
+                    </Badge>
+                  </div>
                   <p className="text-gray-500 text-sm mt-1">{room?.location}</p>
                   
                   <div className="mt-3 flex justify-between items-center">
@@ -64,5 +73,6 @@ function Dashboard() {
     </div>
   )
 }
+
 
 export default Dashboard

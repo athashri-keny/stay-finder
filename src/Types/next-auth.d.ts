@@ -32,3 +32,9 @@ declare module "next-auth/jwt" {
     verifycodeexpiry: Date;
   }
 }
+
+declare global{
+  interface Windows {
+    RazorPay: any
+  }
+}

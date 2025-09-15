@@ -39,6 +39,7 @@ export async function GET(_request: NextRequest ,
 }
 
 
+
 // favourite for adding 
 export async function POST(_request: NextRequest , {params}: {params: Promise<{id: string}>}) {
   

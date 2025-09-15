@@ -7,11 +7,14 @@ import { authOptions } from "../../auth/[...nextauth]/options";
 import ListingModel from "@/model/listing";
 import {nanoid} from 'nanoid'
 
+//TODO: send a email to owner about thier property has been booked 
+// send booking details to owner
+// send an email to user
 
 // for booking (protected route only login users can access this )
 export async function POST(request: NextRequest, {params}:
    
-   { params: { id: string } })
+   { params: Promise<{id: string}> })
  {
    try {
       await dbConnect()
@@ -28,14 +31,14 @@ export async function POST(request: NextRequest, {params}:
       } , {status: 400})
     }
 
-     const { id } = params
+     const  id  = (await params).id
      console.log("Room id" , id )
 
      const session = await getServerSession(authOptions)
      const userId = session?.user
      console.log("userId" , session?.user)
 
-    if (!session?.user || userId) {
+    if (!session?.user || !userId) {
       return NextResponse.json({
          message: "Error sigin required!"
       } , {status: 400})
@@ -66,8 +69,9 @@ export async function POST(request: NextRequest, {params}:
 
     const timeDiff = checkoutDate.getTime() - checkinDate.getTime()
     const numberOfNights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24))
+    console.log("number of nights = " , numberOfNights)
 
-    const totalPrice = foundProperty.price * numberOfNights * guests
+    const totalPrice = foundProperty.price * numberOfNights * guests / 100
     
     const bookingIdNUm = `BOOK-${nanoid(5)}`
 
@@ -80,11 +84,19 @@ export async function POST(request: NextRequest, {params}:
        totalPrice,
       paymentStatus: 'pending',
       guests,
-      BookingId: bookingIdNUm
+      BookingId: bookingIdNUm,
+      numberOfNights: numberOfNights
    })
  
    await newBooking.save()
 
+   await ListingModel.findOneAndUpdate(
+    {_id: id},
+    {status: 'booked'},
+    {new: true}
+   )
+
+   
    return NextResponse.json({
       message: "Property Booked sucessfuly",
       newBooking

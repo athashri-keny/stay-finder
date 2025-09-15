@@ -24,7 +24,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import axios from 'axios'
-import z from 'zod'
+import { toast } from 'sonner'
 
 
 // get property Details api call 
@@ -45,8 +45,8 @@ export default function BookingPage() {
   const [guests, setGuests] = useState('1')
   const [numberOfNights , setnumberOfnights] = useState('')
   const [totalPrice , setTotalPrice] = useState()
-
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
   
   
   // get property details 
@@ -55,7 +55,7 @@ export default function BookingPage() {
      try {
       const response = await axios.get(`/api/rooms/${roomId}`)
       setroomdata(response.data.result[0])
-     console.log("room details found" , response.data)
+     console.log("room details found on book page " , response.data)
       
      } catch (error) {
       console.log("error while getting propertyDetails" , error)
@@ -69,13 +69,14 @@ export default function BookingPage() {
 
  const handleBooking = async() => {
   try {
-    const response = await axios.post(`api/rooms/${roomId}/book` , {
+    const response = await axios.post(`/api/book/${roomId}` , {
       checkin: checkin?.toISOString(),
       checkout: checkout?.toISOString(),
       guests,
-    })
+      })
+      toast("Booked sucessfully! Redirecting you to payment!")
+      router.push(`/payment?amount=${totalPrice}`)
     console.log("Property Booked Sucessfully" , response.data)
-
   } catch (error) {
     console.log("Error while booking" , error)
   }
@@ -88,7 +89,7 @@ useEffect(() => {
   const handlePriceBooking = async () => {
     try {
       const response = await axios.post(`/api/calulate-price/${roomId}`, {
-        checkin: checkin?.toISOString(), // TODO: check this to convert in string or not 
+        checkin: checkin?.toISOString(), 
         checkout: checkout?.toISOString(),
         guests
       });
@@ -196,92 +197,8 @@ useEffect(() => {
             </CardContent>
           </Card>
           
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <User className="h-5 w-5" />
-                Guest Information (atleast one)
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">First Name</label>
-                  <input 
-                    type="text" 
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="Enter your first name"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Last Name</label>
-                  <input 
-                    type="text" 
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="Enter your last name"
-                  />
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <label className="text-sm font-medium"> Email</label>
-                <input 
-                  type="email" 
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  placeholder="Enter your email"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Phone Number</label>
-                <input 
-                  type="tel" 
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  placeholder="Enter your phone number"
-                />
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CreditCard className="h-5 w-5" />
-                Payment Method
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Card Number</label>
-                <input 
-                  type="text" 
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  placeholder="1234 5678 9012 3456"
-                />
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Expiration Date</label>
-                  <input 
-                    type="text" 
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="MM/YY"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">CVV</label>
-                  <input 
-                    type="text" 
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="123"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+         
+         
         </div>
         
         {/* Right column - Summary */}

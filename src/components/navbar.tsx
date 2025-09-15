@@ -90,7 +90,7 @@ function Navbar() {
                       <Link href="/user">Account Settings</Link>
                     </MenubarItem>
                     <MenubarItem asChild>
-                      <Link href="/wishlists">Favourites</Link>
+                      <Link href="/favourites">Favourites</Link>
                     </MenubarItem>
                     <MenubarSeparator />
                     <Button
