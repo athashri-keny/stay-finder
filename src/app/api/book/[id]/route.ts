@@ -23,7 +23,7 @@ export async function POST(request: NextRequest, {params}:
       const {checkin , checkout , guests} = body
   
 
-    console.log(checkin , checkout , guests)
+    console.log(checkin , checkout , guests )
 
     if (!checkin || !checkout || !guests) {
       return NextResponse.json({
@@ -33,7 +33,8 @@ export async function POST(request: NextRequest, {params}:
 
      const  id  = (await params).id
      console.log("Room id" , id )
-
+ 
+     // current user which is booking the property!
      const session = await getServerSession(authOptions)
      const userId = session?.user
      console.log("userId" , session?.user)
@@ -54,6 +55,8 @@ export async function POST(request: NextRequest, {params}:
      }
 
      const foundProperty = await ListingModel.findById(id) // propertyID
+     const propertyPostedBy = foundProperty?.host
+     console.log("Property POSted By " , propertyPostedBy)
 
      if (!foundProperty) {
       return NextResponse.json({
@@ -78,8 +81,9 @@ export async function POST(request: NextRequest, {params}:
 
    const newBooking =  new BookingModel({
       user: userId,
-      listing: id,
+      listing: id, // RoomID
       checkin: checkinDate,
+      propertyPostedBy: propertyPostedBy,
       checkout: checkoutDate,
        totalPrice,
       paymentStatus: 'pending',

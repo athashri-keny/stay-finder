@@ -6,12 +6,22 @@ import React, { useState } from 'react'
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner'
+import ListingModel from '@/model/listing';
+
+// NEXT TO DO:
+// after payment make the payment status to paid 
+// Add a messasge to owner and user(who books)
+// improve ui
+// MAIN - CHECK UP THE SIGNUP LOGIN ISSUE 
+
 
 function Paymentpage() {
   const searchparams = useSearchParams()
   const amount = searchparams.get('amount')
+  const BookingId = searchparams.get('BookingId') //  listing
   const router = useRouter()
   const [isProcessing, setIsProcessing] = useState(false)
+  
   const amountInrupppes = amount as any * 100 //TODO: check this out later it works for now
 
 
@@ -19,7 +29,10 @@ function Paymentpage() {
     setIsProcessing(true)
 
     try {
-      const response = await axios.post('/api/create-order')
+      const response = await axios.post('/api/create-order',{
+        amount: amountInrupppes ,
+         BookingId: BookingId
+      })
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
@@ -27,10 +40,21 @@ function Paymentpage() {
         currency: 'INR',  
         name: 'Stay Finder',
         description: 'Testing Payment Integration',
-        order_id: response.data.id,
+        order_id: response.data.orderId,
         // about happens payment manages this function handler
-        handler: function (response: any) {
-          console.log('Payment successful:', response)
+        handler:  async function (response: any) {
+           try {
+            await axios.post('/api/confirm-payment' , {
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+             razorpay_signature: response.razorpay_signature,
+             BookingId: BookingId
+            })
+           } catch (error) {
+            console.log("Error payment verifiication" , error)
+            toast.error("Error ocuured while payment verification")
+           }
+          console.log('options data = ', options , response)
           alert('Payment Successful!')
           router.push('/dashboard')
           toast("payment sucessfully thanks owner will contact you on your check-in day!")        
@@ -42,6 +66,9 @@ function Paymentpage() {
 
       const payment = new (window as any).Razorpay(options)
       payment.open()
+
+
+     
 
 
     } catch (error) {

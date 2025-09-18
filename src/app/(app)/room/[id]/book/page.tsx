@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { CalendarIcon, User, Home, CreditCard } from 'lucide-react'
+import { CalendarIcon,  Home,  } from 'lucide-react'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -39,6 +39,7 @@ type PropertyData = {
 export default function BookingPage() {
   const params = useParams()
   const roomId = params?.id as string
+
   const [checkin, setCheckin] = useState<Date>()
   const [checkout, setCheckout] = useState<Date>()
   const [roomsdata , setroomdata] = useState<PropertyData>()
@@ -65,8 +66,8 @@ export default function BookingPage() {
   } , [])
 
 
-  // for booking 
 
+  // for booking 
  const handleBooking = async() => {
   try {
     const response = await axios.post(`/api/book/${roomId}` , {
@@ -74,8 +75,9 @@ export default function BookingPage() {
       checkout: checkout?.toISOString(),
       guests,
       })
+      const bookingID = response.data.newBooking._id
       toast("Booked sucessfully! Redirecting you to payment!")
-      router.push(`/payment?amount=${totalPrice}`)
+      router.push(`/payment?amount=${totalPrice}&BookingId=${bookingID}`)
     console.log("Property Booked Sucessfully" , response.data)
   } catch (error) {
     console.log("Error while booking" , error)

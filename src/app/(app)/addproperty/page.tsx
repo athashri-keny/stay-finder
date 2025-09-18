@@ -97,7 +97,7 @@ if (!deboncedLocation || deboncedLocation.length < 2) {
  formdata.append("title" , data.title)
   formdata.append("description" , data.description),
   formdata.append("location", data.location);
- formdata.append("price", String(data.price)); // brower always requires a string 
+ formdata.append("price", String(data.price)); // brower always requires a string (HTTPS request)
   formdata.append("amenities", data.amenities);
 
   formdata.append("availableDates.from", data.availableDates.from.toISOString());
@@ -257,7 +257,7 @@ formdata.append("availableDates.to", data.availableDates.to?.toISOString() || ""
                         type="date"
                           {...field}
                           // TODO: Check this out how it works 
-                          value={field.value ? field.value.toISOString().split('T')[0] : ''} // Always valid string
+                          value={field.value ? field.value.toISOString().split('T')[0] : ''} // converting to string
                         onChange={e => field.onChange(new Date(e.target.value))}
                         onBlur={field.onBlur}
                         name={field.name}
@@ -279,7 +279,7 @@ formdata.append("availableDates.to", data.availableDates.to?.toISOString() || ""
                       <Input
                         type="date"
                           {...field}
-                          value={field.value ? field.value.toISOString().split('T')[0] : ''} // Always valid string
+                          value={field.value ? field.value.toISOString().split('T')[0] : ''} // converting to string 
                         onChange={e => field.onChange(new Date(e.target.value))}
                         onBlur={field.onBlur}
                         name={field.name}

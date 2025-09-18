@@ -4,8 +4,9 @@ import mongoose , {Schema , Document, ObjectId} from "mongoose";
 import ListingModel from "./listing";
 
 export interface Booking extends Document {
-    user: ObjectId, // property posting by host
-    listing: ObjectId // host property
+    user: ObjectId, // who is booking the property
+    listing: ObjectId // Property Details
+    propertyPostedBy: ObjectId, // Property Owner
     checkin: Date,
     checkout: Date,
     totalPrice: Number,
@@ -32,6 +33,11 @@ const bookingSchema: Schema<Booking> = new Schema({
     type: Date,
     required: [true , "Check in date is required!"]
   },
+  propertyPostedBy: {
+  type: mongoose.Types.ObjectId,
+  ref: 'User',
+  required: [true , 'PropertyPOsted By is required!']
+  }, 
   checkout: {
     type: Date,
     required: [true , "Check-out date is required!"]

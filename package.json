@@ -26,6 +26,7 @@
     "framer-motion": "^12.23.12",
     "imagekit": "^6.0.0",
     "input-otp": "^1.4.2",
+    "localtunnel": "^2.0.2",
     "lucide-react": "^0.525.0",
     "mongoose": "^8.16.3",
     "moongoose": "^0.0.5",
