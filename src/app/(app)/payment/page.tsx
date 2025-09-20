@@ -22,7 +22,7 @@ function Paymentpage() {
   const router = useRouter()
   const [isProcessing, setIsProcessing] = useState(false)
   
-  const amountInrupppes = amount as any * 100 //TODO: check this out later it works for now
+  const amountInrupppes = amount as any * 100  // converting it into paise
 
 
   const handlePayment = async () => {
@@ -54,7 +54,6 @@ function Paymentpage() {
             console.log("Error payment verifiication" , error)
             toast.error("Error ocuured while payment verification")
            }
-          console.log('options data = ', options , response)
           alert('Payment Successful!')
           router.push('/dashboard')
           toast("payment sucessfully thanks owner will contact you on your check-in day!")        

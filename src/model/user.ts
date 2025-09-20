@@ -10,7 +10,8 @@ isVerifiedEmail?: boolean,
 verifycode: string,
 verifycodeexpiry: Date,
 phone: number,
-PropertyPosted: mongoose.Types.ObjectId
+PropertyPosted: mongoose.Types.ObjectId,
+Bookings: mongoose.Types.ObjectId
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -72,6 +73,9 @@ const UserSchema: Schema<User> = new Schema({
     }
   }
 ],
+
+
+
 })
 
 // checking if the model is already created or not if not creates it

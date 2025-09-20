@@ -171,6 +171,21 @@ formdata.append("availableDates.to", data.availableDates.to?.toISOString() || ""
             )}
           />
 
+  <FormField
+            control={form.control}
+            name="amenities"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Amenties</FormLabel>
+                <FormControl>
+                  <Textarea placeholder="Enter a title for your property" className="resize-none" {...field} />
+                </FormControl>
+                <FormDescription> Write a catchy title that describes your space and location (e.g., "Luxury Villa with Pool" or "Budget-Friendly Apartment Downtown")</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           {/* Two Column Layout */}
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
             {/* Location */}

@@ -36,7 +36,7 @@ export async function POST( request: NextRequest) {
       BookingId,
       { paymentStatus: 'completed' },
       { new: true }
-    ).populate('user').populate('propertyPostedBy');
+    ).populate('user' , '-password').populate('propertyPostedBy' , '-password');
     
      if (!updatedBooking) {
       return NextResponse.json({ message: "Booking not found" }, { status: 404 });

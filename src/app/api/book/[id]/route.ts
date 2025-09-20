@@ -100,6 +100,12 @@ export async function POST(request: NextRequest, {params}:
     {new: true}
    )
 
+   await UserModel.findByIdAndUpdate(
+      userId,
+      {$push: {Bookings: newBooking._id}},
+      {new: true}
+   )
+
    
    return NextResponse.json({
       message: "Property Booked sucessfuly",
@@ -115,4 +121,113 @@ export async function POST(request: NextRequest, {params}:
          message: "Error while booking room"
       } , {status: 400})
    }
+}
+
+// get the booking for the single user
+
+// get the current user details from session
+// find the current user in database
+// get the booking_id from params 
+// find the booking id in databse
+// return response 
+
+export async function GET(_request: NextRequest , {params}: 
+   {params: Promise<{id: string}>}) {
+   try {
+      
+      await dbConnect()
+
+      const session = await getServerSession(authOptions)
+
+     const userId = session?.user._id 
+     const bookingId =  (await params).id
+
+     if (!userId || !session.user) {
+      return NextResponse.json({
+         message: "Error signin  required!"
+      } , {status: 400})
+     }
+
+     const foundUser = await UserModel.findById(userId)
+     if (!foundUser) {
+      return NextResponse.json({
+         message: "Error user does not exist in our databasse"
+      } , {status: 404})
+     }
+
+     const bookingByUser = await BookingModel.findById(bookingId)
+     if (!bookingByUser) {
+      return NextResponse.json({
+         message: "you dont have any booking right now"
+      } , {status: 201})
+     }
+
+     return NextResponse.json({
+      message: "Booking found",
+      bookingByUser,
+     } , {status: 200})
+
+
+   } catch (error) {
+      console.log("Error while getting the booking details" , error)
+      return NextResponse.json({
+         message: "Error while getting the booking detils for current user"
+      } , {status: 500})
+   }
+}
+
+
+// delete Booking
+export async function DELETE( _request: NextRequest , {params}: 
+   {params: Promise<{id: string}>}) {
+   
+      try {
+         await dbConnect()
+
+         const session = await getServerSession(authOptions)
+         const userId = session?.user._id
+        const bookingId = (await params).id
+
+      if (!userId || !session.user) {
+      return NextResponse.json({
+         message: "Error signin  required!"
+      } , {status: 400})
+     }
+
+     
+     const foundUser = await UserModel.findById(userId)
+     if (!foundUser) {
+      return NextResponse.json({
+         message: "Error user does not exist in our databasse"
+      } , {status: 404})
+     }
+
+   const bookingByUser = await BookingModel.findByIdAndDelete(bookingId)
+
+   await ListingModel.findByIdAndUpdate(
+    bookingByUser?.listing,
+    {status: 'available'},
+    {new: true}
+   )
+
+     if (!bookingByUser) {
+      return NextResponse.json({
+         message: "you dont have any booking right now"
+      } , {status: 201})
+     }
+     
+
+     
+return NextResponse.json({
+   message: "Your booking deleted sucuessfully",
+   bookingByUser
+} , {status: 200})
+
+
+      } catch (error) {
+         console.log("error while deleting the booking" , error)
+         return NextResponse.json({
+            message: "Error whie deleting the booking"
+         } , {status: 500})
+      }
 }
