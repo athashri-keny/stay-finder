@@ -25,12 +25,11 @@ export async function POST(request: NextRequest) {
       const price = parseFloat(form.get("price") as string) || null;
        const images = form.get("images") as File | null
        const amenities = form.get("amenities") as String
-       const availabledatefrom = form.get("availableDates.from") as String || null
-       const availabledateto = form.get("availableDates.to")  as String || null
 
 
 
-    console.log({ description, location, price, images, amenities , availabledatefrom ,  availabledateto , title });
+
+    console.log({ description, location, price, images, amenities , title });
 
 
 
@@ -71,11 +70,6 @@ if (!uploadimg) {
         images: [uploadimg],
         host: userId,
         amenities,
-       availableDates: {
-         to: availabledateto,
-         from: availabledatefrom
-       },
-       
        })
 
        await NewProperty.save()

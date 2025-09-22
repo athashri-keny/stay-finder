@@ -23,8 +23,7 @@ function Navbar() {
       <div className="flex h-16 items-center px-4 container mx-auto">
         {/* Logo on left */}
         <Link href="/" className="flex items-center space-x-2">
-          <div className="bg-rose-500 w-8 h-8 rounded-lg"></div>
-          <span className="font-bold text-xl">StayFinder</span>
+          <span className="font-bold text-2xl pl-9 ">StayFinder</span>
         </Link>
         
         {/* Centered Menu Items */}
@@ -45,17 +44,6 @@ function Navbar() {
             </MenubarMenu>
 
             {/* Messages Menu */}
-            <MenubarMenu>
-              <MenubarTrigger className="cursor-pointer font-medium text-md">Messages</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem asChild>
-                  <Link href="/messages">Inbox</Link>
-                </MenubarItem>
-                <MenubarItem asChild>
-                  <Link href="/messages/notifications">Notifications</Link>
-                </MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
           </Menubar>
         </div>
         

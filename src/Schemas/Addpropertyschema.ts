@@ -16,8 +16,4 @@ export const AddpropertySchema = z.object({
 
   amenities: z.string(),
   
-availableDates: z.object({
-  from: z.date({ message: "Start date is required" }),
-  to: z.date({ message: "End date is required" })
-})
 })  

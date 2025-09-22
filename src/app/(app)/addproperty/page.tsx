@@ -23,6 +23,8 @@ import { toast } from 'sonner';
 import { useRouter } from "next/navigation"
 import { useDebounceValue } from 'usehooks-ts'
 import { Skeleton } from '@/components/ui/skeleton';
+import { Loader2 } from 'lucide-react';
+
 
 
 function Page() {
@@ -45,10 +47,6 @@ const router =  useRouter()
       price: '',
       images: [],
       amenities: '',
-      availableDates: {
-        from: new Date(),
-        to: new Date()
-      }
     }
   });
 
@@ -100,9 +98,6 @@ if (!deboncedLocation || deboncedLocation.length < 2) {
  formdata.append("price", String(data.price)); // brower always requires a string (HTTPS request)
   formdata.append("amenities", data.amenities);
 
-  formdata.append("availableDates.from", data.availableDates.from.toISOString());
-formdata.append("availableDates.to", data.availableDates.to?.toISOString() || "");  
-
 
    for(const image of data.images) {
       formdata.append("images" , image)
@@ -110,6 +105,7 @@ formdata.append("availableDates.to", data.availableDates.to?.toISOString() || ""
 
 
     try {
+      setloading(true)
       const response = await axios.post('/api/addproperty' , formdata ,
         {
           headers: {"Content-Type": "multipart/form-data"}
@@ -118,11 +114,9 @@ formdata.append("availableDates.to", data.availableDates.to?.toISOString() || ""
       console.log("Property added sucessfully" , response.data)
       toast.success("Property added sucessfully")
       router.push('/dashboard')
-      
-
-    
     } catch (error) {
       console.log("Error while " , error)
+      setloading(false)
     }
     finally{
       setloading(false)
@@ -256,57 +250,8 @@ formdata.append("availableDates.to", data.availableDates.to?.toISOString() || ""
           </div>
 
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
                 
-
-            {/* Available Dates (Simple Range) */}
-            <div className="grid grid-cols-1 gap-4">
-              <FormField
-                control={form.control}
-                name="availableDates.from"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Available From</FormLabel>
-                    <FormControl>
-                       <Input
-                        type="date"
-                          {...field}
-                          // TODO: Check this out how it works 
-                          value={field.value ? field.value.toISOString().split('T')[0] : ''} // converting to string
-                        onChange={e => field.onChange(new Date(e.target.value))}
-                        onBlur={field.onBlur}
-                        name={field.name}
-                        ref={field.ref}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="availableDates.to"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Available To</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="date"
-                          {...field}
-                          value={field.value ? field.value.toISOString().split('T')[0] : ''} // converting to string 
-                        onChange={e => field.onChange(new Date(e.target.value))}
-                        onBlur={field.onBlur}
-                        name={field.name}
-                        ref={field.ref}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
 
           {/* Image Upload */}
           <FormField
@@ -333,9 +278,18 @@ formdata.append("availableDates.to", data.availableDates.to?.toISOString() || ""
           />
 
           {/* Submit Button */}
-          <div className="flex justify-end">
+          {loading ? (
+            <>
+             <Loader2 className="w-7 h-7 animate-spin" />
+            </>
+          ) : (
+            <>
+              <div className="flex justify-end">
             <Button type="submit" className="px-8 py-2 text-lg">Add Property</Button>
           </div>
+            </>
+          )}
+        
         </form>
       </Form>
     </div>

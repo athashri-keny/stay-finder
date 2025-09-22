@@ -10,9 +10,6 @@ export const RoomSchema = z.object({
     host:  z.string({message: "Host Id is required!"}),
       amenities: z.array(z.string()).optional(),
 status: z.string(),
-availableDates: z.object({
-  from: z.string({ message: "Start date is required" }),
-  to: z.string({ message: "End date is required" })
-}),
+
   price: z.number({message: "Price is required!"})
 })

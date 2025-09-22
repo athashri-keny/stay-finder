@@ -11,10 +11,6 @@
     host: ObjectId,
     amenities?: string[],
     status: 'booked' | 'available'
-    availableDates?: {
-        to: String,
-        from: String
-    } // optional for filtering
     }
 
     const ListingSechma: Schema<Listing> = new Schema({
@@ -52,16 +48,6 @@
      type: String,
      enum: ['booked' , 'available'],
      default: 'available'
-    },
-    availableDates: {
-        to: {
-            type: String,
-            required: false
-        },
-        from: {
-            type: String,
-            required: false
-        }
     },
     },
     {timestamps: true}
