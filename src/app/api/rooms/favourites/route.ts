@@ -14,6 +14,7 @@ export async function GET(_request: NextRequest) {
 
    const session = await getServerSession(authOptions)
   const userId = session?.user._id
+  console.log( "userid = " ,userId)
 
    if (!session?.user || !userId) {
      return NextResponse.json({
@@ -28,20 +29,22 @@ export async function GET(_request: NextRequest) {
     } , {status: 404})
    }
 
-   const favouriteProperties = await favouriteModel.find({userId: userId}).
+   const favouriteProperties = await favouriteModel.findOne({ userId }).
    populate('propertyId')
    
 
    if (!favouriteProperties) {
     return NextResponse.json({
       message: "No favourite Properties for current User",
-    } , {status: 200})
-   }
+    } , {status: 400})
 
+   } else {
    return NextResponse.json({
     message: "Favourites properties found",
     favouriteProperties
    } , {status: 200})
+
+   }
 
    
   } catch (error) {

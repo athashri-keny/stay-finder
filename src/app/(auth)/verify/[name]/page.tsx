@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FiArrowLeft, FiHash } from 'react-icons/fi'
 import { VerifyCodeSchema } from '@/Schemas/VerifyCodeSchema'
@@ -17,8 +17,8 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
-
-
+import { Loader2 } from 'lucide-react'
+import { toast, Toaster } from 'sonner'
 
 const floatingVariants = {
   float: {
@@ -31,9 +31,11 @@ const floatingVariants = {
   }
 };
 
+
 const VerifyCode = () => {
   const router = useRouter()
   const params = useParams<{name: string}>()
+  const [loading , setloading] = useState(false)
 
   console.log(params.name)
   const form = useForm<z.infer<typeof VerifyCodeSchema>>({
@@ -46,6 +48,7 @@ const VerifyCode = () => {
 
   const onSubmitt = async (data: z.infer<typeof VerifyCodeSchema>) => {
     try {
+      setloading(true)
      const response =  await axios.post(`/api/auth/verifycode`, {
         name: params.name,
         verifycode: data.code
@@ -53,29 +56,16 @@ const VerifyCode = () => {
       console.log("form data" , response.data )
       console.log("Successfully verified account! Redirecting to dashboard...")
       router.push('/dashboard')
+      toast("Signup Sucessfully!")
     } catch (error) {
       console.log("Error while submitting", error)
+      setloading(false)
     }
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center p-4 overflow-hidden relative">
       {/* Floating particles */}
-      {[...Array(8)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full bg-gradient-to-r from-purple-500/20 to-indigo-500/20"
-          style={{
-            width: Math.floor(Math.random() * 100 + 50),
-            height: Math.floor(Math.random() * 100 + 50),
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-          }}
-          variants={floatingVariants}
-          animate="float"
-        />
-      ))}
-
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -168,7 +158,15 @@ const VerifyCode = () => {
                        type="submit" 
                 className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-medium py-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
               >
-                Verify Account
+                {loading ? (
+                 <>
+                         <Loader2 className='w-7 h-7 animate-spin'/>
+                 </>
+                ): (
+                 <>
+                  Verify Account
+                 </>
+                )}
               </Button>
             </form>
           </Form>

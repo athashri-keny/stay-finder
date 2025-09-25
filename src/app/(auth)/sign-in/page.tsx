@@ -12,11 +12,15 @@ import {
 import { SignInSchema } from '@/Schemas/SigninSchema';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { Loader, Loader2 } from 'lucide-react';
+
+
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const [error, setError] = useState("");
+  const [loading , setloading] = useState(false)
 
   const form = useForm<z.infer<typeof SignInSchema>>({
     resolver: zodResolver(SignInSchema),
@@ -32,23 +36,18 @@ const SignIn = () => {
   };
 
   const submitHandler = async (data: z.infer<typeof SignInSchema>) => {
+    setloading(true)
     try {
-      const result = await signIn('credentials', {
-        redirect: false,
+      await signIn('credentials', {
         name: data.name,
         email: data.email,
         password: data.password,
       });
-
-      if (result?.error) {
-        setError(result.error);
-      } else if (result?.ok) {
-        router.push('/dashboard');
-      } else {
-        setError("Unexpected response from server");
-      }
     } catch (err) {
       setError("An unexpected error occurred");
+      setloading(false)
+    } finally {
+      setloading(false);
     }
   };
 
@@ -60,6 +59,7 @@ const SignIn = () => {
             {error}
           </div>
         )}
+        <h1> Sign-Up</h1>
 
         <Form {...form}>
           <form 
@@ -169,7 +169,16 @@ const SignIn = () => {
               type="submit"
               className="w-full bg-gradient-to-r from-purple-600 to-indigo-700 text-white py-3.5 rounded-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] active:scale-95"
             >
-              Sign In
+              {loading ? (
+               <>
+               <Loader className='h-10 w-10 animate-spin text-center'/>
+               </>
+              ): (
+              <>
+                     Sign In
+              </>
+              )}
+     
             </button>
 
             <div className="relative flex items-center py-4">

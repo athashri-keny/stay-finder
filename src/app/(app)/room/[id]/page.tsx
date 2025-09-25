@@ -29,7 +29,8 @@ const [roomsdata , setroomdata] = useState<Room | null>()
 const [favouriteProp ,  setfavouritesProp] = useState(false)
 const [loading , setloading ] = useState(false)
 const [reserveloading , setreserveloading] = useState(false)
-
+const [suggestion , setsuggestion] = useState("")
+const [loadingAI , setLoadingAI] =  useState(false)
 
    const parmams = useParams()
   const roomid = parmams?.id as string
@@ -92,6 +93,25 @@ const handleReserveClick = async() => {
     console.log("Error while clickig", error)
   }
 }
+
+ // get ai suggestion about this property
+
+ const getSuggestion = async() => {
+   setLoadingAI(true)
+    try {
+      const response = await axios.post('/api/ai-sugesstions'  ,  {description: roomsdata?.description})
+     
+      console.log( "Success ai suggestion " ,response.data)
+      setsuggestion(response.data.summary[0].summary_text)
+      
+    } catch (error) {
+      console.log("Error while getting AI suggestion" ,  error)
+      setLoadingAI(false)
+    } finally {
+      setLoadingAI(false)
+    }
+ }
+
 
 
 return (
@@ -194,6 +214,28 @@ return (
 
             {/* Availability */}
             <div className="mb-8">
+              <div className="mb-8 flex flex-col items-start gap-4">
+  <button
+    onClick={() => getSuggestion()}
+    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition duration-300"
+  >
+    {loadingAI ? (
+      <>
+      <Loader2  className='w-10 h-10 animate-spin'/>
+      </>
+    ): (
+     <>
+         Get AI Suggestions
+     </>
+    )}
+
+  </button>
+
+  <p className="bg-black text-white p-4 rounded-lg shadow-sm w-full max-w-md focus-visible:">
+    {suggestion}
+  </p>
+</div>
+
             </div>
           </div>
 

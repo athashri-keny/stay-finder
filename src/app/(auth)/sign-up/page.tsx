@@ -15,11 +15,13 @@
   import axios from 'axios';
   import { useRouter } from 'next/navigation';
   import { Input } from '@/components/ui/input';
+  import { Loader2 } from 'lucide-react';
 
 
   const Signup = () => {
 
     const [showPassword, setShowPassword] = useState(false);
+    const [loading , setloading] = useState(false);
     const router = useRouter()
 
     // google sign-in 
@@ -42,26 +44,16 @@
   const SubmitHandler = async (data: z.infer<typeof SignUpSchema>) => {
 
     try {
+      setloading(true)
       const response = await axios.post('/api/auth/sign-up' , data)
       console.log("Signup sucessfully" , response.data)
       router.push(`verify/${data.name}`)
-      
     } catch (error) {
       console.log("Error while sigining up" , error)
+      setloading(false)
     }
   }
 
-    // Floating animation variants
-    const floatingVariants = {
-      float: {
-        y: [0, -20, 0],
-        transition: {
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }
-      }
-    };
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center p-4 overflow-hidden relative">
@@ -271,13 +263,26 @@
         )}
       />
 
-      {/* Submit Button */}
-      <button
+
+    {loading ? (
+      <>
+       <Loader2 className='w-7 h-7 animate-spin bg-purple-600 text-center p-2.5'/>
+      </>
+    ) : (
+      <>
+        <button
         type="submit"
         className="w-full bg-gradient-to-r from-purple-600 to-indigo-700 text-white py-3.5 rounded-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] active:scale-95"
       >
         Create Account
       </button>
+      </>
+    )
+  
+  }
+
+      {/* Submit Button */}
+    
 
       {/*  google sign */}
       <button
@@ -300,7 +305,7 @@
             >
               <p className="text-gray-400">
                 Already have an account?{' '}
-                <a href="#" className="text-purple-400 font-medium hover:text-purple-300 hover:underline transition">Sign in</a>
+                <a href="/sign-in" className="text-purple-400 font-medium hover:text-purple-300 hover:underline transition">Sign in</a>
               </p>
             </motion.div>
           </motion.div>
