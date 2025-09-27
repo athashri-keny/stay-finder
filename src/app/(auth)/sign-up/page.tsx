@@ -16,6 +16,8 @@
   import { useRouter } from 'next/navigation';
   import { Input } from '@/components/ui/input';
   import { Loader2 } from 'lucide-react';
+ 
+
 
 
   const Signup = () => {
@@ -46,8 +48,11 @@
     try {
       setloading(true)
       const response = await axios.post('/api/auth/sign-up' , data)
+      localStorage.setItem('tempAuthToken' , response.data.Authtoken)
       console.log("Signup sucessfully" , response.data)
       router.push(`verify/${data.name}`)
+
+      
     } catch (error) {
       console.log("Error while sigining up" , error)
       setloading(false)
@@ -57,21 +62,7 @@
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center p-4 overflow-hidden relative">
-        {/* Floating particles */}
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-gradient-to-r from-purple-500/20 to-indigo-500/20"
-            style={{
-              width: Math.floor(Math.random() * 100 + 50),
-              height: Math.floor(Math.random() * 100 + 50),
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-            }}
-            animate="float"
-          />
-        ))}
-
+       
         <motion.div 
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -84,47 +75,7 @@
             transition={{ duration: 0.5, delay: 0.2 }}
             className="bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden border border-gray-700/50"
           >
-            <div className="bg-gradient-to-r from-gray-900 to-black p-8 text-center relative overflow-hidden">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="absolute -top-20 -right-20 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"
-              />
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="absolute -bottom-20 -left-20 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl"
-              />
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="relative z-10"
-              >
-                <div className="flex justify-center mb-4">
-                  <FiHome className="text-4xl text-purple-500" />
-                </div>
-                <motion.h1 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                  className="text-3xl font-bold text-white mb-2"
-                >
-                  StayFinder
-                </motion.h1>
-                <motion.p 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6 }}
-                  className="text-gray-400"
-                >
-                  Find your perfect stay anywhere in the world
-                </motion.p>
-              </motion.div>
-            </div>
+            <h1 className='text-3xl text-center p-6'>Sign-Up</h1>
             <Form {...form}>
     <form onSubmit={form.handleSubmit(SubmitHandler)} className="p-6 space-y-6">
       
@@ -265,21 +216,20 @@
 
 
     {loading ? (
-      <>
-       <Loader2 className='w-7 h-7 animate-spin bg-purple-600 text-center p-2.5'/>
-      </>
-    ) : (
-      <>
-        <button
-        type="submit"
-        className="w-full bg-gradient-to-r from-purple-600 to-indigo-700 text-white py-3.5 rounded-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] active:scale-95"
-      >
-        Create Account
-      </button>
-      </>
-    )
-  
-  }
+  <div className="flex justify-center items-center py-3.5">
+    <Loader2 
+      className="w-8 h-8 animate-spin text-white rounded-full shadow-lg  "
+    />
+  </div>
+) : (
+  <button
+    type="submit"
+    className="w-full bg-gradient-to-r from-purple-600 to-indigo-700 text-white py-3.5 rounded-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] active:scale-95"
+  >
+    Create Account
+  </button>
+)}
+
 
       {/* Submit Button */}
     

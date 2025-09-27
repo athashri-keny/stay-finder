@@ -37,4 +37,5 @@ declare global{
   interface Windows {
     RazorPay: any
   }
+
 }

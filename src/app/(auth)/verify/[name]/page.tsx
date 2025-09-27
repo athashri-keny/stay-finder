@@ -19,17 +19,8 @@ import {
 } from "@/components/ui/input-otp"
 import { Loader2 } from 'lucide-react'
 import { toast, Toaster } from 'sonner'
+import { signIn } from 'next-auth/react'
 
-const floatingVariants = {
-  float: {
-    y: [0, -20, 0],
-    transition: {
-      duration: 6,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
-  }
-};
 
 
 const VerifyCode = () => {
@@ -53,10 +44,21 @@ const VerifyCode = () => {
         name: params.name,
         verifycode: data.code
       })
-      console.log("form data" , response.data )
-      console.log("Successfully verified account! Redirecting to dashboard...")
+
+    //  Get the special token from server response
+      const AutoLoginToken = response.data.AutoLoginToken
+       await signIn('credentials' , {
+        redirect: false,
+        AutoLoginToken: AutoLoginToken, // // Pass token instead of password
+      })
+  
+    
+        toast.success("Verification successful! Redirecting to dashboard...");
+
+        setTimeout(() => {  
       router.push('/dashboard')
-      toast("Signup Sucessfully!")
+        }  , 3000)
+
     } catch (error) {
       console.log("Error while submitting", error)
       setloading(false)

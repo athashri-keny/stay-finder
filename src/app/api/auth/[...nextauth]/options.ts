@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt'
 import dbConnect from "@/lib/dbconnect";
 import UserModel from "@/model/user";
 import GoogleProvider from "next-auth/providers/google";
+import jwt from 'jsonwebtoken'
+import { JWTpayload } from "@/Schemas/JwtPayloadSchema";
 
 
 
@@ -19,29 +21,52 @@ providers: [
     credentials: {
       email: { label: "Email", type: 'text', placeholder: "Enter your email" },
       password: { label: "Password", type: "password", placeholder: "Enter your password" },
+      AutoLoginToken: {label: 'Auto Login token' , type:'text'}
     },
+ 
     async authorize(credentials: any): Promise<any> {
       await dbConnect();
       try {
-        const user = await UserModel.findOne({
+        // normal sign-in
+       if (credentials.email && credentials.password) {
+         const user = await UserModel.findOne({
           email: credentials.email
         });
         if (!user) {
           throw new Error("Email does not exist in our database");
-        }
+        }        
         const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
         if (isPasswordCorrect) {
           return user;
-        } else {
-          throw new Error("Incorrect password");
-        }
+        } 
+       }
+
+       // autoLogin Credentials
+       if (credentials.AutoLoginToken) {
+         // Verify the special token (jwt verifyies it )
+          const decoded = jwt.verify(credentials.AutoLoginToken, process.env.JWT_SECRET as string) as JWTpayload;
+    
+            // Check if token is for the right purpose
+          if (decoded.purpose  === 'auto_login_after_verification') {
+
+             // Find user and return them
+            const user = await UserModel.findById(decoded.userId)
+
+            if (user && user.isVerifiedEmail) {
+              return user; // user loggged in successfully!
+            }
+
+          } else {
+            throw new Error("Invaild aauto -login token ")
+          }
+       }
+      
       } catch (error) {
         throw new Error("Authentication failed");
       }
     }
   })
 ],
-
 
 pages: {
   signIn: '/auth/sign-in',
@@ -78,7 +103,7 @@ pages: {
   },
 
 
-  // Persist custom fields into JWT
+  // 
   async jwt({ token, user }) {
     if (user) {
       token._id = user._id;

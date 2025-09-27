@@ -89,9 +89,11 @@ return (
               </div>
             </div>
             <div className="absolute bottom-4 right-4">
-              <button className="bg-white text-indigo-600 hover:bg-indigo-50 px-4 py-2 rounded-lg font-medium transition duration-200 shadow-md">
+              <Link
+              href={'/edit-profile'}
+              className="bg-white text-indigo-600 hover:bg-indigo-50 px-4 py-2 rounded-lg font-medium transition duration-200 shadow-md">
                 Edit Profile
-              </button>
+              </Link>
             </div>
           </div>
 

@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/menubar"
 import { useSession , signOut } from 'next-auth/react'
 import { Button } from './ui/button'
+import { toast } from 'sonner'
 
 
 function Navbar() {
@@ -23,7 +24,7 @@ function Navbar() {
       <div className="flex h-16 items-center px-4 container mx-auto">
         {/* Logo on left */}
         <Link href="/" className="flex items-center space-x-2">
-          <span className="font-bold text-2xl pl-9 ">StayFinder</span>
+          <span className="font-bold text-2xl pl-9 ">Stay-Finder</span>
         </Link>
         
         {/* Centered Menu Items */}
@@ -82,7 +83,12 @@ function Navbar() {
                     </MenubarItem>
                     <MenubarSeparator />
                     <Button
-                    onClick={ () => {signOut()}}
+                    onClick={ () => {
+                       toast("Logged logout successfully!")
+                      setTimeout(() => {
+                          signOut() 
+                      }, 1000);           
+                    }}
                     >Log Out</Button>
                   </>
                 ) : (

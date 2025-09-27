@@ -14,6 +14,7 @@ import { SendVerificationEmail } from "@/Helpers/SendVerificationCode";
 // so hash the password through bycrpt 
 // save the user in database and return  response 
 
+
 export async function POST(request: Response) {
     try {
         await dbConnect()
@@ -47,13 +48,16 @@ export async function POST(request: Response) {
       })
 
       await newUser.save()
-    
 
     // sending verification code 
    try {
        await SendVerificationEmail(verifyCode ,  name , email)
       console.log("Verify code send sucessfully")
-      return SucessResponse("Verified code sent sucessfully please verify your email" , 201)
+    
+      return NextResponse.json({
+        message: "Succesfuully signup redirecting you to verification code",
+        name: newUser.name
+      } , {status: 200})
 
    } catch (error) {
     console.error("Error while ocurr email" , error)
