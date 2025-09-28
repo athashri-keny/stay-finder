@@ -65,6 +65,7 @@ const SignIn = () => {
       toast("Error ")
       setError("Login failed check your crendentails")
       setloading(false)
+      console.log("Error" , error)
     } finally {
       setloading(false);
     }
@@ -220,19 +221,19 @@ const SignIn = () => {
 
         <div className="mt-6 text-center">
           <p className="text-gray-400">
-            Don't have an account?{' '}
+            don&apos;t have an account?{' '}
             <Link href="/sign-up" className="text-purple-400 font-medium hover:text-purple-300 hover:underline transition">
               Sign up
             </Link>
           </p>
           
-          <a 
+          <Link
             href="/" 
             className="inline-flex items-center mt-4 text-gray-400 hover:text-white transition"
           >
             <FiArrowLeft className="mr-2" />
             Back to home
-          </a>
+          </Link>
         </div>
       </div>
     </div>
