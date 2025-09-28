@@ -14,7 +14,7 @@ import { toast } from 'sonner'
 // improve ui
 // MAIN - CHECK UP THE SIGNUP LOGIN ISSUE 
 
-
+export const dynamic = 'force-dynamic' // for prerending while deployment searchparams(issue)
 function Paymentpage() {
   const searchparams = useSearchParams()
   const amount = searchparams.get('amount')
