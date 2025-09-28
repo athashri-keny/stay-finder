@@ -61,12 +61,11 @@ const handlechangePassowrd = async(data: z.infer<typeof ChangePasswordSchema>) =
       name="Oldpassword"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Oldpassword</FormLabel>
+          <FormLabel className='m-1'>Oldpassword</FormLabel>
           <FormControl>
             <Input placeholder="Enter your oldpasswrd" 
             {...field} />
           </FormControl>
-          <FormDescription>Old password</FormDescription>
           <FormMessage />
         </FormItem>
       )}
@@ -83,7 +82,6 @@ const handlechangePassowrd = async(data: z.infer<typeof ChangePasswordSchema>) =
         <Input placeholder="New passowrd"
         {...field} />
       </FormControl>
-      <FormDescription>This is your public display name.</FormDescription>
       <FormMessage />
     </FormItem>
   )}
@@ -99,8 +97,7 @@ const handlechangePassowrd = async(data: z.infer<typeof ChangePasswordSchema>) =
       <FormControl>
         <Input placeholder="password"
          {...field} />
-      </FormControl>
-      <FormDescription>This is your public display name.</FormDescription>
+      </FormControl>  
       <FormMessage />
     </FormItem>
   )}
@@ -109,7 +106,9 @@ const handlechangePassowrd = async(data: z.infer<typeof ChangePasswordSchema>) =
   {loading ? (
     <Loader className='w-9 h-10 animate-spin'/>
   ): (
-   <p>Change Password</p>
+ <div className='p-3'>
+    <p className='p-2'>Change Password</p>
+ </div>
   )}
     </Button>
  

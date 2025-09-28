@@ -13,6 +13,7 @@ import { SignInSchema } from '@/Schemas/SigninSchema';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Loader, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 
 
@@ -38,13 +39,30 @@ const SignIn = () => {
   const submitHandler = async (data: z.infer<typeof SignInSchema>) => {
     setloading(true)
     try {
-      await signIn('credentials', {
+     const result = await signIn('credentials', {
         name: data.name,
         email: data.email,
         password: data.password,
+        redirect: false
       });
-    } catch (err) {
-      setError("An unexpected error occurred");
+
+    if (result?.ok) {
+
+      router.push('/dashboard');
+      toast("Login Sucessfully!")
+    } else {
+      let errorMessage = "Login failed. Please try again.";
+
+      if (result?.error === 'CredentialsSignin') {
+        errorMessage = "Invalid email, name, or password. Please check your credentials.";
+      } else if (result?.error === 'EmailNotVerified') {
+        errorMessage = "Please verify your email before signing in.";
+      } 
+      setError(errorMessage);
+    }
+    } catch (error) {
+      toast("Error ")
+      setError("Login failed check your crendentails")
       setloading(false)
     } finally {
       setloading(false);
@@ -54,18 +72,13 @@ const SignIn = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex flex-col items-center justify-center p-4 relative">
       <div className="w-full max-w-md">
-        {error && (
-          <div className="mb-4 p-3 bg-red-500/20 text-red-300 rounded-lg text-center">
-            {error}
-          </div>
-        )}
-        <h1> Sign-Up</h1>
-
+        
         <Form {...form}>
           <form 
             onSubmit={form.handleSubmit(submitHandler)} 
             className="bg-gray-800/30 backdrop-blur-lg border border-gray-700 rounded-xl p-6 space-y-6 shadow-2xl"
           >
+               <h1 className='text-3xl p-4 text-center'> Sign-In</h1>
             {/* Name Field - ADDED */}
             <FormField
               control={form.control}
@@ -180,13 +193,18 @@ const SignIn = () => {
               )}
      
             </button>
-
+  
+           {error && (
+          <div className="mb-4 p-3 bg-red-500/20 text-red-300 rounded-lg text-center">
+            {error}
+          </div>
+        )}
             <div className="relative flex items-center py-4">
               <div className="flex-grow border-t border-gray-700"></div>
               <span className="flex-shrink mx-4 text-gray-500 text-sm">OR</span>
               <div className="flex-grow border-t border-gray-700"></div>
             </div>
-
+ 
             <button
               type="button"
               onClick={handleGoogleSignIn}
@@ -197,11 +215,12 @@ const SignIn = () => {
             </button>
           </form>
         </Form>
+      
 
         <div className="mt-6 text-center">
           <p className="text-gray-400">
             Don't have an account?{' '}
-            <a href="#" className="text-purple-400 font-medium hover:text-purple-300 hover:underline transition">
+            <a href="/sign-up" className="text-purple-400 font-medium hover:text-purple-300 hover:underline transition">
               Sign up
             </a>
           </p>
