@@ -18,6 +18,11 @@ export const dynamic = 'force-dynamic' // for prerending while deployment search
 function Paymentpage() {
   const searchparams = useSearchParams()
   const amount = searchparams.get('amount')
+  if (!amount) {
+     return {
+      notFound: true,
+    }
+  }
   const BookingId = searchparams.get('BookingId') //  listing
   const router = useRouter()
   const [isProcessing, setIsProcessing] = useState(false)
