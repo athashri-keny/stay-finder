@@ -14,21 +14,23 @@ import { toast } from 'sonner'
 // improve ui
 // MAIN - CHECK UP THE SIGNUP LOGIN ISSUE 
 
-export const dynamic = 'force-dynamic' // for prerending while deployment searchparams(issue)
+
 function Paymentpage() {
   const searchparams = useSearchParams()
   const amount = searchparams.get('amount')
-  if (!amount) {
-     return {
-      notFound: true,
-    }
-  }
+// for prerending while deployment searchparams(issue)
+
   const BookingId = searchparams.get('BookingId') //  listing
   const router = useRouter()
   const [isProcessing, setIsProcessing] = useState(false)
   
   const amountInrupppes = amount as any * 100  // converting it into paise
-
+  
+  if (!amount) {
+     return {
+      notFound: true,
+    }
+  }
 
   const handlePayment = async () => {
     setIsProcessing(true)
