@@ -1,4 +1,4 @@
-import NextAuth , {DefaultSession} from "next-auth";
+import  {DefaultSession} from "next-auth";
 
 // declaring custom types of user
 declare module 'next-auth' {

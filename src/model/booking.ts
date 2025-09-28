@@ -1,7 +1,6 @@
 // Reservations made by users (Booking)
 
 import mongoose , {Schema , Document, ObjectId} from "mongoose";
-import ListingModel from "./listing";
 
 export interface Booking extends Document {
     user: ObjectId, // who is booking the property
@@ -9,11 +8,11 @@ export interface Booking extends Document {
     propertyPostedBy: ObjectId, // Property Owner
     checkin: Date,
     checkout: Date,
-    totalPrice: Number,
+    totalPrice: number,
     paymentStatus: 'pending' | 'completed' | 'Failed'
-    guests: Number
+    guests: number
     BookingId: string
-    numberOfNights: Number
+    numberOfNights: number
     }
 
 

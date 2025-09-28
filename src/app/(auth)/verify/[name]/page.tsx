@@ -18,8 +18,9 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp"
 import { Loader2 } from 'lucide-react'
-import { toast, Toaster } from 'sonner'
+import { toast } from 'sonner'
 import { signIn } from 'next-auth/react'
+import Link from 'next/link'
 
 
 
@@ -179,19 +180,13 @@ const VerifyCode = () => {
             transition={{ delay: 1.2 }}
             className="p-6 text-center border-t border-gray-700/50"
           >
-            <p className="text-gray-400">
-              Didn&apos;t receive a code?{' '}
-              <a href="#" className="text-purple-400 font-medium hover:text-purple-300 hover:underline transition">
-                Resend
-              </a>
-            </p>
-            <a
+            <Link
               href="/"
               className="inline-flex items-center mt-4 text-gray-400 hover:text-white transition"
             >
               <FiArrowLeft className="mr-2" />
               Back to home
-            </a>
+            </Link>
           </motion.div>
         </motion.div>
       </motion.div>

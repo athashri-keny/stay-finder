@@ -12,8 +12,9 @@ import {
 import { SignInSchema } from '@/Schemas/SigninSchema';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Loader, Loader2 } from 'lucide-react';
+import { Loader } from 'lucide-react';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 
 
@@ -220,9 +221,9 @@ const SignIn = () => {
         <div className="mt-6 text-center">
           <p className="text-gray-400">
             Don't have an account?{' '}
-            <a href="/sign-up" className="text-purple-400 font-medium hover:text-purple-300 hover:underline transition">
+            <Link href="/sign-up" className="text-purple-400 font-medium hover:text-purple-300 hover:underline transition">
               Sign up
-            </a>
+            </Link>
           </p>
           
           <a 

@@ -92,8 +92,8 @@ if (!deboncedLocation || deboncedLocation.length < 2) {
     setloading(true)
    const formdata = new FormData()
 
- formdata.append("title" , data.title)
-  formdata.append("description" , data.description),
+ formdata.append("title" , data.title);
+  formdata.append("description" , data.description);
   formdata.append("location", data.location);
  formdata.append("price", String(data.price)); // brower always requires a string (HTTPS request)
   formdata.append("amenities", data.amenities);
@@ -145,8 +145,11 @@ if (!deboncedLocation || deboncedLocation.length < 2) {
                 <FormControl>
                   <Textarea placeholder="Enter a title for your property" className="resize-none" {...field} />
                 </FormControl>
-                <FormDescription> Write a catchy title that describes your space and location (e.g., "Luxury Villa with Pool" or "Budget-Friendly Apartment Downtown")</FormDescription>
-                <FormMessage />
+              // After (using curly braces - more readable):
+<FormDescription> 
+  {'Write a catchy title that describes your space and location (e.g., "Luxury Villa with Pool" or "Budget-Friendly Apartment Downtown")'}
+</FormDescription>
+
               </FormItem>
             )}
           />
@@ -271,7 +274,7 @@ if (!deboncedLocation || deboncedLocation.length < 2) {
                       onChange={(e) => field.onChange(e.target.files)}
                     />
                     <ImagePlus className="mx-auto h-10 w-10 text-gray-400" />
-                    <p className="mt-2 text-sm text-gray-600">Click to upload or drag and drop</p>
+                    <p className="mt-2 text-sm text-gray-600">{"This won't cause errors"}</p>
                   </label>
                 </FormControl>
                 <FormDescription>Upload high-quality images for better visibility.</FormDescription>

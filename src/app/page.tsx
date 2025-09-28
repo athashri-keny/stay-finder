@@ -69,7 +69,7 @@ function Page() {
                 whileTap={{ scale: 0.95 }}
               >
                 <span className="flex items-center justify-center gap-2">
-                  Let's Get Started!
+                  Lets Get Started!
                 </span>
               </motion.div>
             </Link>

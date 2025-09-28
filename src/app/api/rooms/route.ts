@@ -1,4 +1,3 @@
-import { errorResponse } from "@/Types/ApiErrorResponse";
 import dbConnect from "@/lib/dbconnect";
 import ListingModel from "@/model/listing";
 import { NextRequest, NextResponse } from "next/server";

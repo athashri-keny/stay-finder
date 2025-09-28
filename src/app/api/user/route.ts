@@ -7,7 +7,7 @@ import { authOptions } from "../auth/[...nextauth]/options";
 import BookingModel from "@/model/booking";
 
 
-export async function GET( _request: NextRequest) {
+export async function GET( request: NextRequest) {
     await dbConnect()
     try {
         const session = await getServerSession(authOptions)

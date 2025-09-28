@@ -21,7 +21,7 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
 
-function page() {
+function Page() {
 
   type Booking = z.infer<typeof BookingDetailsSchema>
 
@@ -198,4 +198,4 @@ const HandleDeleteBooking = async() => {
   )
 }
 
-export default page
+export default Page

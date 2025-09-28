@@ -3,8 +3,9 @@ import Razorpay from 'razorpay'
 import BookingModel from "@/model/booking";
 import { SendEmailToOwner } from "@/Helpers/SendEmailToUser";
 import { SendEmailToUser } from "@/Helpers/SendEmailToUser";
+import crypto from 'crypto';
 
-const razorpay = new Razorpay({
+ new Razorpay({
 key_id: process.env.RAZORPAY_KEY_ID!,
 key_secret: process.env.RAZORPAY_KEY_SECRET
 })
@@ -22,7 +23,7 @@ export async function POST( request: NextRequest) {
         }
 
         //TODO: check this out how it works
-       const crypto = require('crypto');
+
     const generatedSignature = crypto
       .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET!)
       .update(razorpay_order_id + "|" + razorpay_payment_id)

@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { FormControl,  FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import z from 'zod'
 import { ChangePasswordSchema } from '@/Schemas/Changepassowrd'
@@ -15,7 +15,7 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation';
 
 
-function page() {
+function Page() {
 const [loading , setloading] = useState(false)
 const router = useRouter()
 
@@ -120,4 +120,4 @@ const handlechangePassowrd = async(data: z.infer<typeof ChangePasswordSchema>) =
 }
 
 
-export default page
+export default Page

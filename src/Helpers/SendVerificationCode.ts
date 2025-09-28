@@ -4,7 +4,7 @@
 
 export async function SendVerificationEmail(name: string, verifycode: string, email: string) {
   try {
-    const info = await transporter.sendMail({
+     await transporter.sendMail({
       from: 'athashrikeny10@gmail.com',
       to: email,
       subject: "🔐 Your StayFinder Verification Code",

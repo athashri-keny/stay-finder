@@ -70,6 +70,7 @@ export default function BookingPage() {
   // for booking 
  const handleBooking = async() => {
   try {
+    setIsLoading(true)
     const response = await axios.post(`/api/book/${roomId}` , {
       checkin: checkin?.toISOString(),
       checkout: checkout?.toISOString(),
@@ -81,6 +82,7 @@ export default function BookingPage() {
     console.log("Property Booked Sucessfully" , response.data)
   } catch (error) {
     console.log("Error while booking" , error)
+    setIsLoading(false)
   }
  }
 

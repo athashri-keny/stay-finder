@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner'
-import ListingModel from '@/model/listing';
+
 
 // NEXT TO DO:
 // after payment make the payment status to paid 

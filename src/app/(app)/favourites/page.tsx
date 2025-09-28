@@ -11,8 +11,9 @@ import { Badge } from '@/components/ui/badge'
 
 
 function page() {
+  type room  = z.infer<typeof RoomSchema>
 
- const [favouriteRooms , setfavouritesRooms] = useState([])
+ const [favouriteRooms , setfavouritesRooms] = useState<room[]>([])
 
 
 
@@ -47,24 +48,24 @@ getfav()
             <Link key={room._id} href={`/room/${room._id}`}>
               <div className="bg-white rounded-xl shadow-md overflow-hidden">
                 <img 
-                  src={room?.propertyId?.images[0]} 
+                  src={room?.images[0]} 
                   alt="Property" 
                   className="w-full h-48 object-cover"
                 />  
                 <div className="p-4">
                   <div className="flex justify-between items-start">
-                    <h3 className="font-semibold text-lg truncate text-black">{room?.propertyId?.title}</h3>
+                    <h3 className="font-semibold text-lg truncate text-black">{room?.title}</h3>
                     <Badge 
-                      variant={room.propertyId?.status === 'available' ? 'outline' : 'destructive'}
-                      className={room.propertyId?.status === 'available' ? "bg-green-500" : "bg-red-500"}
+                      variant={room.status === 'available' ? 'outline' : 'destructive'}
+                      className={room.status === 'available' ? "bg-green-500" : "bg-red-500"}
                     >
-                      {room.propertyId.status === 'available' ? "Available" : "Booked"}
+                      {room.status === 'available' ? "Available" : "Booked"}
                     </Badge>
                   </div>
-                  <p className="text-gray-500 text-sm mt-1">{room?.propertyId.location}</p>
+                  <p className="text-gray-500 text-sm mt-1">{room?.location}</p>
                   
                   <div className="mt-3 flex justify-between items-center">
-                    <span className="text-lg font-bold text-black">₹{room.propertyId.price}/night</span>
+                    <span className="text-lg font-bold text-black">₹{room.price}/night</span>
                   </div>
                 </div>
               </div>

@@ -1,9 +1,7 @@
-import { NextResponse , NextRequest  } from "next/server";
 import UserModel from "@/model/user";
 import dbConnect from "@/lib/dbconnect";
 import { errorResponse } from '../../../../Types/ApiErrorResponse'
 import { SucessResponse } from "@/Types/ApiResponse";
-    import  {z} from 'zod'
 import { nameQuerySchema } from "@/Schemas/SignupSchema";
 
 

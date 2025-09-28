@@ -62,7 +62,7 @@ providers: [
        }
       
       } catch (error) {
-        throw new Error("Authentication failed");
+        throw new Error("Authentication failed" );
       }
     }
   })

@@ -15,7 +15,7 @@ import { SendVerificationEmail } from "@/Helpers/SendVerificationCode";
 // save the user in database and return  response 
 
 
-export async function POST(request: Response) {
+export async function POST(request: NextRequest) {
     try {
         await dbConnect()
       

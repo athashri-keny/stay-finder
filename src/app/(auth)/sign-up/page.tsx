@@ -3,7 +3,7 @@
   import React, { useState } from 'react';
   import { motion } from 'framer-motion';
   import { signIn } from 'next-auth/react';
-  import { FiUser, FiMail, FiLock, FiEye, FiEyeOff,  FiHome } from 'react-icons/fi';
+  import { FiUser, FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
   import { FcGoogle } from 'react-icons/fc';
   import { useForm } from "react-hook-form"
   import * as z from 'zod'

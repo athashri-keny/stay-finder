@@ -19,12 +19,12 @@ export async function POST(request: NextRequest) {
           await dbConnect()
        const form = await request.formData()
 
-       const title = form.get("title") as String || null
-       const description = form.get("description") as String
-       const location = form.get("location") as String
+       const title = form.get("title") as string || null
+       const description = form.get("description") as string
+       const location = form.get("location") as string
       const price = parseFloat(form.get("price") as string) || null;
        const images = form.get("images") as File | null
-       const amenities = form.get("amenities") as String
+       const amenities = form.get("amenities") as string
 
 
 

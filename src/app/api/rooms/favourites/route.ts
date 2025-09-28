@@ -1,4 +1,3 @@
-import { errorResponse } from "@/Types/ApiErrorResponse";
 import dbConnect from "@/lib/dbconnect";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/options";
@@ -7,7 +6,7 @@ import UserModel from "@/model/user";
 import favouriteModel from "@/model/favourites";
 
 
-export async function GET(_request: NextRequest) {
+export async function GET(request: NextRequest) {
   
   try {
     await dbConnect()
