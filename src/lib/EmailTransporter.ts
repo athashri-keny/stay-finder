@@ -1,5 +1,5 @@
 
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer";
 
 // Create a transporter for SMTP
  export const transporter = nodemailer.createTransport({

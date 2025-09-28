@@ -44,7 +44,7 @@ const router =  useRouter()
       title: '',
       description: '',
       location: '',
-      price: '',
+      price: '',  
       images: [],
       amenities: '',
     }
@@ -145,7 +145,6 @@ if (!deboncedLocation || deboncedLocation.length < 2) {
                 <FormControl>
                   <Textarea placeholder="Enter a title for your property" className="resize-none" {...field} />
                 </FormControl>
-              // After (using curly braces - more readable):
 <FormDescription> 
   {'Write a catchy title that describes your space and location (e.g., "Luxury Villa with Pool" or "Budget-Friendly Apartment Downtown")'}
 </FormDescription>
@@ -180,7 +179,9 @@ if (!deboncedLocation || deboncedLocation.length < 2) {
                 <FormControl>
                   <Textarea placeholder="Enter a title for your property" className="resize-none" {...field} />
                 </FormControl>
-                <FormDescription> Write a catchy title that describes your space and location (e.g., "Luxury Villa with Pool" or "Budget-Friendly Apartment Downtown")</FormDescription>
+               <FormDescription> 
+  {'Write a catchy title that describes your space and location (e.g., "Luxury Villa with Pool" or "Budget-Friendly Apartment Downtown")'}
+</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -206,7 +207,9 @@ if (!deboncedLocation || deboncedLocation.length < 2) {
                     }}
                     />
                   </FormControl>
-                  <FormDescription>  Enter your property's location - include neighborhood, city, and nearby landmarks to help guests find and choose your place.</FormDescription>
+                 <FormDescription>  
+  {"Enter your property's location - include neighborhood, city, and nearby landmarks to help guests find and choose your place."}
+</FormDescription>
                      {loading ? (
   <div className="space-y-2 mt-1">
     <Skeleton className="h-6 w-full rounded-md" />

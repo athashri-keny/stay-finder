@@ -63,7 +63,7 @@ export default function BookingPage() {
      }
    }
    getPropertyDetails()
-  } , [])
+  } , [roomId])
 
 
 
@@ -268,9 +268,9 @@ useEffect(() => {
                Total price = price per night × number of nights × number of guests
               </p>
 
-              <p className="text-xs text-muted-foreground text-center mt-4">
-                You won't be charged until the host accepts your request
-              </p>
+            <p className="text-xs text-muted-foreground text-center mt-4">
+  {"You won't be charged until the host accepts your request"}
+</p>
             </CardContent>
           </Card>
           

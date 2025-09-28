@@ -3,14 +3,14 @@
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import UserModel from '@/model/user'
 import Link from 'next/link'
+import Image from 'next/image'
 import { RoomSchema } from '@/Schemas/RoomSchema'
 import z from 'zod'
 import { Badge } from '@/components/ui/badge'
 
 
-function page() {
+function Page() {
   type room  = z.infer<typeof RoomSchema>
 
  const [favouriteRooms , setfavouritesRooms] = useState<room[]>([])
@@ -47,7 +47,7 @@ getfav()
           {favouriteRooms?.map(room => (
             <Link key={room._id} href={`/room/${room._id}`}>
               <div className="bg-white rounded-xl shadow-md overflow-hidden">
-                <img 
+                <Image 
                   src={room?.images[0]} 
                   alt="Property" 
                   className="w-full h-48 object-cover"
@@ -77,4 +77,4 @@ getfav()
   )
 }
 
-export default page
+export default Page

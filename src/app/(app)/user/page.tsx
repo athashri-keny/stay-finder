@@ -207,7 +207,7 @@ return (
                   
                   {properties.length === 0 && (
                     <div className="col-span-full text-center py-8">
-                      <p className="text-gray-500">You haven't posted any properties yet.</p>
+                      <p className="text-gray-500">You have&apos;t posted any properties yet.</p>
                       <button className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">
                         Post Your First Property
                       </button>
