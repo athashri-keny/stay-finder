@@ -25,12 +25,19 @@ import { useDebounceValue } from 'usehooks-ts'
 import { Skeleton } from '@/components/ui/skeleton';
 import { Loader2 } from 'lucide-react';
 
+interface LocationSuggestion {
+  display_name: string;
+  // Add other properties that the Nominatim API returns if needed
+  place_id?: number;
+  lat?: string;
+  lon?: string;
+}
 
 
 function Page() {
 const [loading , setloading] = useState(false)
 const [location , setlocation] = useState("")
-const [locationsuggestion ,  setlocationsuggestions] = useState([])
+const [locationsuggestion ,  setlocationsuggestions] = useState<LocationSuggestion[]>([])
 
  const [deboncedLocation] = useDebounceValue(location , 1000) // extracts element 
 
