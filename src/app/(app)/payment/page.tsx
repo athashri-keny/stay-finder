@@ -2,34 +2,23 @@
 
 import axios from 'axios'
 import Script from 'next/script';
-import React, { useState } from 'react'
-import { useSearchParams } from 'next/navigation';
+import React, { useState , Suspense } from 'react'
+import { notFound, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner'
 
 
-// NEXT TO DO:
-// after payment make the payment status to paid 
-// Add a messasge to owner and user(who books)
-// improve ui
-// MAIN - CHECK UP THE SIGNUP LOGIN ISSUE 
 
-
-function Paymentpage() {
+function PaymentContent() {
   const searchparams = useSearchParams()
   const amount = searchparams.get('amount')
-// for prerending while deployment searchparams(issue)
-
   const BookingId = searchparams.get('BookingId') //  listing
   const router = useRouter()
   const [isProcessing, setIsProcessing] = useState(false)
-  
   const amountInrupppes = amount as any * 100  // converting it into paise
   
   if (!amount) {
-     return {
-      notFound: true,
-    }
+    notFound()
   }
 
   const handlePayment = async () => {
@@ -94,6 +83,14 @@ function Paymentpage() {
         {isProcessing ? 'Processing...' : 'Pay Now'}
       </button>
     </div>
+  )
+}
+// for prerending while deployment searchparams(issue)
+function Paymentpage() {
+  return (
+    <Suspense fallback={<div>Loading payment page...</div>}>
+      <PaymentContent />
+    </Suspense>
   )
 }
 
