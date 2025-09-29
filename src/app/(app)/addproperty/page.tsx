@@ -75,9 +75,7 @@ if (!deboncedLocation || deboncedLocation.length < 2) {
           params: {
             q: deboncedLocation,
             format: "json",
-            // addressdetails: 1,
             limit: 5,
-            countrycodes: "IN",
           },
           timeout: 5000,
         },
@@ -280,11 +278,12 @@ if (!deboncedLocation || deboncedLocation.length < 2) {
                   <label className="border border-dashed rounded-lg p-6 text-center cursor-pointer hover:bg-gray-50 transition">
                     <Input
                       type="file"
-                      className="hidden"
+                    
                       onChange={(e) => field.onChange(e.target.files)}
                     />
                     <ImagePlus className="mx-auto h-10 w-10 text-gray-400" />
-                    <p className="mt-2 text-sm text-gray-600">{"This won't cause errors"}</p>
+                    <p className="mt-2 text-sm text-gray-600">{"Add your image here"}
+                    </p>
                   </label>
                 </FormControl>
                 <FormDescription>Upload high-quality images for better visibility.</FormDescription>
@@ -296,7 +295,7 @@ if (!deboncedLocation || deboncedLocation.length < 2) {
           {/* Submit Button */}
           {loading ? (
             <>
-             <Loader2 className="w-7 h-7 animate-spin" />
+             <Loader2 className="w-10 h-10 animate-spin text-center text-2xl" />
             </>
           ) : (
             <>
