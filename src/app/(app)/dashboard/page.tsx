@@ -18,7 +18,6 @@ function Dashboard() {
       try {
         const response = await axios.get('/api/rooms')
         const parsedRooms = z.array(RoomSchema).parse(response.data)
-        console.log(parsedRooms)
         setRooms(parsedRooms)
         } catch (error) {
         console.error("Error fetching rooms", error)

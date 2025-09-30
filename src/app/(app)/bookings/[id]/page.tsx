@@ -39,7 +39,6 @@ useEffect(() => {
     const getBookingDetails = async() => {
     try {
        const response = await axios.get(`/api/book/${bookingID}`) 
-       console.log(response.data)
        setBookingDetails(response.data.bookingByUser)
        setTotalPrice(response.data.bookingByUser.totalPrice)
        setCheckIndate(response.data.bookingByUser.checkin)

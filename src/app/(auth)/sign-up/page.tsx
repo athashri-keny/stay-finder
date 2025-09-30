@@ -16,7 +16,7 @@
   import { useRouter } from 'next/navigation';
   import { Input } from '@/components/ui/input';
   import { Loader2 } from 'lucide-react';
- 
+ import { toast, Toaster } from 'sonner';
 
 
 
@@ -47,12 +47,9 @@
 
     try {
       setloading(true)
-      const response = await axios.post('/api/auth/sign-up' , data)
-      localStorage.setItem('tempAuthToken' , response.data.Authtoken)
-      console.log("Signup sucessfully" , response.data)
+      await axios.post('/api/auth/sign-up' , data)
       router.push(`verify/${data.name}`)
-
-      
+      toast("Signup sucessfully redirecting to dashboard!")
     } catch (error) {
       console.log("Error while sigining up" , error)
       setloading(false)

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 export const config = {
-  matcher: [ '/sign-in', '/sign-up', '/', '/verify/:path*' , '/addproperty'],
+  matcher: [ '/sign-in', '/sign-up', '/', '/verify/:path*' , '/addproperty'  ],
 };
 
 export async function middleware(request: NextRequest) {
@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
   }
 
 
-const protectedRoutesss = ['/addproperty']
+const protectedRoutesss = ['/addproperty' , '/^\/room\/[a-f0-9]{24}\/book$/'] // regex of room/:id/book
 
 
 if (!token && protectedRoutesss.some(route => url.pathname.startsWith(route))) {

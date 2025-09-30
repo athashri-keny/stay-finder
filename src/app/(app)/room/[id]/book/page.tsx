@@ -25,6 +25,7 @@ import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import axios from 'axios'
 import { toast } from 'sonner'
+import { useSession } from 'next-auth/react'
 
 
 // get property Details api call 
@@ -48,7 +49,8 @@ export default function BookingPage() {
   const [totalPrice , setTotalPrice] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-  
+  const {data: session} = useSession()
+  const user = session?.user._id
   
   // get property details 
   useEffect(() => {
@@ -56,8 +58,6 @@ export default function BookingPage() {
      try {
       const response = await axios.get(`/api/rooms/${roomId}`)
       setroomdata(response.data.result[0])
-     console.log("room details found on book page " , response.data)
-      
      } catch (error) {
       console.log("error while getting propertyDetails" , error)
      }
@@ -69,6 +69,12 @@ export default function BookingPage() {
 
   // for booking 
  const handleBooking = async() => {
+   if (!user) {
+    toast.error("Please login to continue..")
+    setTimeout(() => {
+      router.push('/sign-up')
+    }, 1000);
+   }
   try {
     setIsLoading(true)
     const response = await axios.post(`/api/book/${roomId}` , {
@@ -79,7 +85,7 @@ export default function BookingPage() {
       const bookingID = response.data.newBooking._id
       toast("Booked sucessfully! Redirecting you to payment!")
       router.push(`/payment?amount=${totalPrice}&BookingId=${bookingID}`)
-    console.log("Property Booked Sucessfully" , response.data)
+
   } catch (error) {
     console.log("Error while booking" , error)
     setIsLoading(false)

@@ -7,7 +7,7 @@ export async function SendVerificationEmail(name: string, verifycode: string, em
      await transporter.sendMail({
       from: 'athashrikeny10@gmail.com',
       to: email,
-      subject: "🔐 Your StayFinder Verification Code",
+      subject: " Your StayFinder Verification Code",
       text: `Hi ${name}, your verification code is: ${verifycode}`, // fallback for plain-text email clients
       html: `
   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">

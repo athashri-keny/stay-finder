@@ -38,7 +38,6 @@ BookingId: string
     const getCurrentUser = async () => {
       try {
         const response = await axios.get('/api/user')
-        console.log(response.data)
         setUserdata(response.data.user)
         setProperties(response.data.user.PropertyPosted)
         setbooking(response.data.bookings)

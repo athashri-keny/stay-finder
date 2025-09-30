@@ -82,7 +82,6 @@ if (!deboncedLocation || deboncedLocation.length < 2) {
         
       );
       setlocationsuggestions(response.data);
-      console.log(response.data)
     } catch (error) {
       console.log("Error while fetching location suggests", error);
     } finally {
@@ -116,7 +115,6 @@ if (!deboncedLocation || deboncedLocation.length < 2) {
           headers: {"Content-Type": "multipart/form-data"}
         }
       )
-      console.log("Property added sucessfully" , response.data)
       toast.success("Property added sucessfully")
       router.push('/dashboard')
     } catch (error) {

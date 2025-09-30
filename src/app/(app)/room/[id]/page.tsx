@@ -12,6 +12,8 @@ import { toast } from 'sonner'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
+import { useSession } from 'next-auth/react'
+
 
 // TODO: create a favourite page backend + frontend
 // account settings page backend + frontend
@@ -32,8 +34,12 @@ const [reserveloading , setreserveloading] = useState(false)
 const [suggestion , setsuggestion] = useState("")
 const [loadingAI , setLoadingAI] =  useState(false)
 
+
    const parmams = useParams()
   const roomid = parmams?.id as string
+const {data: session} = useSession()
+const user = session?.user._id
+
 
 
 useEffect(() => {
@@ -61,6 +67,14 @@ useEffect(() => {
 
   // add to favourites
 const addtofavourite = async() => {
+
+if (!user) {
+  toast.error("!!! Failed plz login to continue...")
+ setTimeout(() => {
+ router.push('/sign-up')
+} ,1000 )
+}
+
   try {
    await axios.post(`/api/rooms/${roomid}`)
     toast("property added favourite sucessfully")
@@ -251,16 +265,18 @@ return (
               
               <button
                onClick={handleReserveClick}
-                    className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 mt-2 flex items-center justify-center gap-2"
+                  className={`w-full py-3 px-4 rounded-lg font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 mt-2 flex items-center justify-center gap-2 ${
+    reserveloading || roomsdata?.status === 'booked'
+      ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
+      : 'bg-blue-600 text-white hover:bg-blue-700'
+  }`}
               >
                 {reserveloading ? (
                   <>
                   <Loader2 className='w-7 h-7 animate-spin'/>
                   </>
                 ) : (
-                  <>
-                    Reserve
-                  </>
+                 roomsdata?.status === 'booked' ? "Reserved" : "Reserve"
                 )}
               
               </button>

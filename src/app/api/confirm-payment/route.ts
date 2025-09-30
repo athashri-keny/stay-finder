@@ -47,13 +47,18 @@ export async function POST( request: NextRequest) {
    try {
      await SendEmailToUser({
        userEmail: (updatedBooking.user as any)?.email, // populated email of the user which is booking the property
-       BookingId: updatedBooking.BookingId
+       BookingId: updatedBooking.BookingId,
+       name: (updatedBooking.user as any)?.name
  
      })
      
      await SendEmailToOwner({
       OwnerEmail: (updatedBooking.propertyPostedBy as any)?.email, // populate email of the user which is owned the property
-      BookingId: updatedBooking.BookingId
+      BookingId: updatedBooking.BookingId,
+      // User which is booked details
+      userName: (updatedBooking.user as any).name,
+      UserEmail : (updatedBooking.user as any).email,
+      UserPhone:  (updatedBooking.user as any).phone
      })
      
    } catch (error) {
